@@ -416,6 +416,7 @@ SELECT * FROM pedidos ORDER BY data_pedido ASC; -- Ordena os pedidos pela data e
 SELECT * FROM pedidos ORDER BY data_pedido DESC; -- Ordena os pedidos pela data em ordem decrescente (do mais recente para o mais antigo).
 
 ------------------------------------------------------------------------------------------
+
 --- ALIAS;
 -- Um alias é um nome temporário (apelido em inglês) atribuído a uma tabela ou coluna em uma consulta SQL.
 -- Ele é usado para tornar os nomes mais legíveis ou para evitar conflitos de nomes em consultas complexas.
@@ -977,4 +978,5 @@ CASE
    ELSE 'PRODUTO BARATO'
 END
 ORDER BY EMBALAGEM; -- Selecionando a embalagem, o status do preço e a média do preço de lista para cada combinação de embalagem e status do preço da tabela "tabela_de_produtos" onde o sabor é 'Manga', agrupando os resultados por embalagem e status do preço e ordenando os resultados por embalagem em ordem alfabética crescente.
+
 
