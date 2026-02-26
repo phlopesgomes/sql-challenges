@@ -662,6 +662,52 @@ GROUP BY EMBALAGEM) X WHERE X.PRECO_MAXIMO >= 10; -- Repare que colocamos um ali
 
 ------------------------------------------------------------------------------------------
 
+-- VISÃO (VIEW);
+-- Uma visão (VIEW) é uma tabela virtual baseada no resultado de uma consulta SQL. Ela não armazena os dados fisicamente, mas sim a definição da consulta que gera os dados. 
+-- As visões são usadas para simplificar consultas complexas, fornecer uma camada de abstração e melhorar a segurança dos dados.
+
+-- Exemplo de criação de uma visão:
+CREATE VIEW funcionarios_vendas AS
+SELECT f.nome, f.departamento, f.salario, p.nome_projeto
+FROM funcionarios f
+JOIN projetos p ON f.id = p.id_funcionario; -- Esta visão chamada "funcionarios_vendas" combina informações da tabela "funcionarios" e "projetos" para mostrar o nome, departamento, salário e nome do projeto de cada funcionário.
+
+-- Vamos a tabela "suco_vendas" para exemplificar melhor o uso da visão, passo a passo:
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS MAIOR_PRECO FROM tabela_de_produtos
+GROUP BY EMBALAGEM;
+-- Esta consulta retorna o preço máximo para cada embalagem na tabela "tabela_de_produtos".
+
+-- Vamos usar o mesmo SELECT como uma subconsulta para ver apenas os preços máximos que são maiores ou iguais a 10:
+SELECT X.EMBALAGEM, X.MAIOR_PRECO FROM
+(SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS MAIOR_PRECO FROM tabela_de_produtos
+GROUP BY EMBALAGEM) X WHERE X.MAIOR_PRECO >= 10;
+
+-- Agora, vamos criar uma visão para simplificar essa consulta:
+CREATE VIEW 'VW_MAIORES_EMBALAGENS' AS
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS MAIOR_PRECO FROM tabela_de_produtos
+GROUP BY EMBALAGEM
+WHERE MAIOR_PRECO >= 10; -- Esta visão chamada "VW_MAIORES_EMBALAGENS" retorna as embalagens e os preços máximos dos produtos que têm um preço de lista maior ou igual a 10.
+
+-- Agora, podemos consultar a visão diretamente para obter os resultados:
+SELECT X.EMBALAGEM, X.MAIOR_PRECO FROM
+vw_maiores_embalagens X WHERE X.MAIOR_PRECO >= 10;
+-- Esta consulta retorna as embalagens e os preços máximos dos produtos que têm um preço de lista maior ou igual a 10, utilizando a visão "VW_MAIORES_EMBALAGENS" para simplificar a consulta.
+
+-- Usando a função JOIN com a visão:
+SELECT A.NOME_DO_PRODUTO, A.EMBALAGEM, A.PRECO_DE_LISTA, X.MAIOR_PRECO
+FROM tabela_de_produtos A INNER JOIN vw_maiores_embalagens X
+ON A.EMBALAGEM = X.EMBALAGEM;
+-- Esta consulta retorna o nome do produto, embalagem, preço de lista e o preço máximo para os produtos que têm um preço de lista maior ou igual a 10, utilizando a visão "VW_MAIORES_EMBALAGENS" para obter os preços máximos e fazendo um INNER JOIN com a tabela "tabela_de_produtos" para obter as informações adicionais dos produtos.
+
+-- Podemos riar um indicador de porcentagem para saber o quão mais barato está cada produto, comparado ao valor da coluna "MAIOR_PRECO":
+SELECT A.NOME_DO_PRODUTO, A.EMBALAGEM, A.PRECO_DE_LISTA, X.MAIOR_PRECO,
+((A.PRECO_DE_LISTA / X.MAIOR_PRECO) -1) * 100 AS PERCENTUAL
+FROM tabela_de_produtos A INNER JOIN vw_maiores_embalagens X
+ON A.EMBALAGEM = X.EMBALAGEM;
+-- Esta consulta retorna o nome do produto, embalagem, preço de lista, preço máximo e o percentual de diferença entre o preço de lista e o preço máximo para os produtos que têm um preço de lista maior ou igual a 10, utilizando a visão "VW_MAIORES_EMBALAGENS" para obter os preços máximos e fazendo um INNER JOIN com a tabela "tabela_de_produtos" para obter as informações adicionais dos produtos.
+
+------------------------------------------------------------------------------------------
+
 --- UPDATE;
 -- O comando UPDATE é usado para modificar os dados existentes em uma tabela de banco de dados.
 
@@ -981,6 +1027,7 @@ CASE
    ELSE 'PRODUTO BARATO'
 END
 ORDER BY EMBALAGEM; -- Selecionando a embalagem, o status do preço e a média do preço de lista para cada combinação de embalagem e status do preço da tabela "tabela_de_produtos" onde o sabor é 'Manga', agrupando os resultados por embalagem e status do preço e ordenando os resultados por embalagem em ordem alfabética crescente.
+
 
 
 
