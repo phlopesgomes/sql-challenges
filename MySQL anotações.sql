@@ -566,7 +566,7 @@ ORDER BY EMBALAGEM;
 
 --- JOIN;
 -- O comando JOIN é usado para combinar registros de duas ou mais tabelas em um banco de dados com base em uma condição de correspondência entre as tabelas.
--- Existem diferentes tipos de JOIN, como INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN e CROSS JOIN, cada um com uma finalidade específica para determinar quais registros serão incluídos no resultado da consulta.
+-- Existem diferentes tipos de JOIN, como INNER JOIN, LEFT JOIN, RIGHT JOIN, CROSS JOIN e FULL JOIN cada um com uma finalidade específica para determinar quais registros serão incluídos no resultado da consulta.
 
 -- Vamos utilizar um banco de dados fora do contexto de funcionários, para exemplificar melhor o uso do JOIN,
 -- Utilizaremos o banco de dados "suco_vendas", que tem as tabelas "tabela_de_produtos", "tabela_de_vendedores" e "notas_fiscais".
@@ -602,6 +602,12 @@ RIGHT JOIN TABELA_DIREITA B
 ON A.IDENTIFICADOR = B.IDENTIFICADOR; -- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros da tabela "B" e os nomes correspondentes da tabela "A".
 -- Se um registro da tabela "B" não tiver um nome correspondente na tabela "A", o campo do nome será preenchido com NULL.
 
+-- CROSS JOIN: Retorna o produto cartesiano de ambas as tabelas, ou seja, combina cada registro da tabela "A" com cada registro da tabela "B".
+SELECT A.NOME, B.HOBBY FROM
+TABELA_ESQUERDA A, TABELA_DIREITA B; -- Retorna o nome da tabela "A" e o hobby da tabela "B", combinando cada registro da tabela "A" com cada registro da tabela "B".
+-- O CROSS JOIN pode resultar em um número muito grande de registros, dependendo do número de registros em cada tabela, pois combina cada registro de uma tabela com todos os registros da outra tabela.
+-- Fique atento com a chamada da função CROSS JOIN, ela pode ser feita de duas formas: usando a palavra-chave CROSS JOIN ou simplesmente listando as tabelas separadas por vírgula, como no exemplo acima. Ambas as formas produzem o mesmo resultado, que é o produto cartesiano das duas tabelas.
+
 -- FULL JOIN: Retorna todos os registros quando há uma correspondência em uma das tabelas. Se não houver correspondência, os campos da tabela sem correspondência serão preenchidos com NULL.
 SELECT A.NOME, B.HOBBY FROM 
 TABELA_ESQUERDA A
@@ -609,11 +615,15 @@ FULL JOIN TABELA_DIREITA B
 ON A.IDENTIFICADOR = B.IDENTIFICADOR; -- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros de ambas as tabelas.
 -- Se um registro da tabela "A" não tiver um hobby correspondente na tabela "B", o campo do hobby será preenchido com NULL. Se um registro da tabela "B" não tiver um nome correspondente na tabela "A", o campo do nome será preenchido com NULL.
 
--- CROSS JOIN: Retorna o produto cartesiano de ambas as tabelas, ou seja, combina cada registro da tabela "A" com cada registro da tabela "B".
+--- Detalhe crucial do FULL JOIN:
+-- O MySQL não suporta o FULL JOIN diretamente, mas você pode simular um FULL JOIN usando uma combinação de LEFT JOIN e RIGHT JOIN com a cláusula UNION.
 SELECT A.NOME, B.HOBBY FROM
-TABELA_ESQUERDA A, TABELA-DIREITA B; -- Retorna o nome da tabela "A" e o hobby da tabela "B", combinando cada registro da tabela "A" com cada registro da tabela "B".
--- O CROSS JOIN pode resultar em um número muito grande de registros, dependendo do número de registros em cada tabela, pois combina cada registro de uma tabela com todos os registros da outra tabela.
--- Fique atento com a chamada da função CROSS JOIN, ela pode ser feita de duas formas: usando a palavra-chave CROSS JOIN ou simplesmente listando as tabelas separadas por vírgula, como no exemplo acima. Ambas as formas produzem o mesmo resultado, que é o produto cartesiano das duas tabelas.
+TABELA_ESQUERDA A
+LEFT JOIN TABELA_DIREITA B ON A.IDENTIFICADOR = B.IDENTIFICADOR
+UNION
+SELECT A.NOME, B.HOBBY FROM
+TABELA_ESQUERDA A
+RIGHT JOIN TABELA_DIREITA B ON A.IDENTIFICADOR = B.IDENTIFICADOR; -- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros de ambas as tabelas.
 
 ------------------------------------------------------------------------------------------
 
@@ -837,7 +847,10 @@ WHERE id = 5; -- Certifique-se de que o valor 'Recursos Humanos' exista na tabel
 
 ------------------------------------------------------------------------------------------
 
---- Alguns exemplos que aprendi no curso da Alura:
+----- Alguns exemplos que aprendi no curso da Alura:
+
+---- AULA (01) - Criando tabelas e selecionando dados (o INSERT INTO ficou nos arquivos, preciso trazer pra cá);
+
 --- Utilizando o banco de dados "suco_vendas"
 -- Comando CREATE TABLE;
 CREATE TABLE itens_notas_fiscais (
@@ -903,6 +916,10 @@ CREATE TABLE tabela_de_vendedores (
 )
 ;
 
+------------------------------------------------------------------------------------------
+
+---- AULA 02 - SELECT;
+
 -- SELECT (considerando que aqui não inseri os dados, só estou anotando os comandos aprendidos);
 USE sucos_vendas;
 
@@ -942,6 +959,9 @@ SELECT * FROM tabela_de_produtos WHERE SABOR LIKE '%Maça%'; -- Selecionando tod
 SELECT * FROM tabela_de_produtos WHERE SABOR LIKE '%Maça%'
 AND EMBALAGEM = 'PET'; -- Selecionando todos os produtos cujo sabor contém a palavra 'Maça' e que têm embalagem 'PET' da tabela "tabela_de_produtos".
 
+------------------------------------------------------------------------------------------
+
+---- AULA 03 - SELECT COM FUNÇÕES DE AGRUPAMENTO, ORDEM E FILTRO (DISTINCT, LIMIT, ORDER BY, GROUP BY, HAVING);
 --- Vendo formas diferentes de exibir os resultados;
 SELECT EMBALAGEM, TAMANHO FROM tabela_de_produtos; -- Selecionando as colunas "EMBALAGEM" e "TAMANHO" da tabela "tabela_de_produtos".
 
@@ -1028,8 +1048,78 @@ CASE
 END
 ORDER BY EMBALAGEM; -- Selecionando a embalagem, o status do preço e a média do preço de lista para cada combinação de embalagem e status do preço da tabela "tabela_de_produtos" onde o sabor é 'Manga', agrupando os resultados por embalagem e status do preço e ordenando os resultados por embalagem em ordem alfabética crescente.
 
+------------------------------------------------------------------------------------------
 
+---- AULA 04 - SELECT COM JUNÇÃO DE TABELAS (JOIN), SUBQUERY E VIEW;
 
+SELECT * FROM tabela_de_vendedores; -- Selecionando todas as colunas da tabela "tabela_de_vendedores".
+
+SELECT * FROM notas_fiscais; -- Selecionando todas as colunas da tabela "notas_fiscais".
+
+SELECT * FROM tabela_de_vendedores A
+INNER JOIN notas_fiscais B
+ON A.MATRICULA = B.MATRICULA; -- Realizando um INNER JOIN entre as tabelas "tabela_de_vendedores" (alias A) e "notas_fiscais" (alias B) com base na coluna "MATRICULA".
+
+SELECT A.MATRICULA, A.NOME, COUNT(*) FROM
+tabela_de_vendedores A
+INNER JOIN notas_fiscais B
+ON A.MATRICULA = B.MATRICULA
+GROUP BY A.MATRICULA, A.NOME; -- Selecionando a matrícula, nome e contagem de registros para cada vendedor da tabela "tabela_de_vendedores" (alias A) que tem correspondência na tabela "notas_fiscais" (alias B), 
+-- agrupando os resultados por matrícula e nome do vendedor.
+
+SELECT COUNT(*) FROM tabela_de_clientes; -- Contando o número total de registros na tabela "tabela_de_clientes".
+
+SELECT DISTINCT A.CPF, A.NOME, B.CPF FROM tabela_de_clientes A
+LEFT JOIN notas_fiscais B ON A.CPF = B.CPF; -- Realizando um LEFT JOIN entre as tabelas "tabela_de_clientes" (alias A) e "notas_fiscais" (alias B) com base na coluna "CPF", selecionando os CPFs e nomes dos clientes, 
+-- bem como os CPFs correspondentes das notas fiscais, incluindo todos os clientes mesmo aqueles que não têm correspondência nas notas fiscais.
+
+SELECT DISTINCT A.CPF, A.NOME, B.CPF FROM tabela_de_clientes A
+LEFT JOIN notas_fiscais B ON A.CPF = B.CPF
+WHERE B.CPF IS NULL; -- Realizando um LEFT JOIN entre as tabelas "tabela_de_clientes" (alias A) e "notas_fiscais" (alias B) com base na coluna "CPF", selecionando os CPFs e nomes dos clientes, 
+-- bem como os CPFs correspondentes das notas fiscais, e filtrando para incluir apenas aqueles clientes que não têm correspondência nas notas fiscais (ou seja, onde o CPF da nota fiscal é NULL).
+
+SELECT DISTINCT BAIRRO FROM tabela_de_clientes
+UNION
+SELECT DISTINCT BAIRRO FROM tabela_de_vendedores; -- Selecionando os bairros distintos da tabela "tabela_de_clientes" e da tabela "tabela_de_vendedores" e combinando os resultados usando UNION, que elimina duplicatas.
+
+SELECT DISTINCT BAIRRO FROM tabela_de_clientes
+UNION ALL
+SELECT DISTINCT BAIRRO FROM tabela_de_vendedores; -- Selecionando os bairros distintos da tabela "tabela_de_clientes" e da tabela "tabela_de_vendedores" e combinando os resultados usando UNION ALL, que inclui todas as ocorrências, mesmo que haja duplicatas.
+
+SELECT tabela_de_vendedores.BAIRRO,
+tabela_de_vendedores.NOME, DE_FERIAS,
+tabela_de_clientes.BAIRRO,
+tabela_de_clientes.NOME  FROM tabela_de_vendedores LEFT JOIN tabela_de_clientes
+ON tabela_de_vendedores.BAIRRO = tabela_de_clientes.BAIRRO
+UNION
+SELECT tabela_de_vendedores.BAIRRO,
+tabela_de_vendedores.NOME, DE_FERIAS,
+tabela_de_clientes.BAIRRO,
+tabela_de_clientes.NOME  FROM tabela_de_vendedores RIGHT JOIN tabela_de_clientes
+ON tabela_de_vendedores.BAIRRO = tabela_de_clientes.BAIRRO; -- Realizando um LEFT JOIN entre as tabelas "tabela_de_vendedores" e "tabela_de_clientes" com base na coluna "BAIRRO", selecionando os bairros, nomes dos vendedores, status de férias, bairros dos clientes e nomes dos clientes,
+-- e combinando os resultados com um RIGHT JOIN entre as mesmas tabelas e condições, usando UNION para eliminar duplicatas e obter uma lista completa de bairros, vendedores e clientes, incluindo aqueles que não têm correspondência em ambas as tabelas.
+-- Note que essa consulta pode resultar em uma lista extensa e possivelmente com muitos valores NULL, dependendo dos dados presentes nas tabelas, isso significa que pode haver muitos vendedores que não têm clientes correspondentes e vice-versa.
+
+SELECT * FROM tabela_de_clientes WHERE BAIRRO 
+IN (SELECT DISTINCT BAIRRO FROM tabela_de_vendedores); -- Selecionando todos os clientes da tabela "tabela_de_clientes" onde o bairro do cliente está presente na lista de bairros distintos obtida da tabela "tabela_de_vendedores" usando uma subquery.
+
+SELECT X.EMBALAGEM, X.PRECO_MAXIMO FROM 
+(SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS PRECO_MAXIMO FROM tabela_de_produtos
+GROUP BY EMBALAGEM) X WHERE X.PRECO_MAXIMO >= 10; -- Selecionando a embalagem e o preço máximo para cada embalagem da tabela "tabela_de_produtos" onde o preço máximo é maior ou igual a 10, 
+-- utilizando uma subquery para calcular o preço máximo por embalagem e filtrando os resultados na consulta externa.
+
+CREATE VIEW `VW_MAIORES_EMBALAGENS` AS
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS PRECO_MAXIMO FROM tabela_de_produtos
+GROUP BY EMBALAGEM; -- Criando uma visão chamada "VW_MAIORES_EMBALAGENS" que retorna a embalagem e o preço máximo para cada embalagem da tabela "tabela_de_produtos", agrupando os resultados por embalagem.
+
+SELECT * FROM VW_MAIORES_EMBALAGENS; -- Selecionando todas as colunas da visão "VW_MAIORES_EMBALAGENS", que retorna a embalagem e o preço máximo para cada embalagem da tabela "tabela_de_produtos".
+
+SELECT X.EMBALAGEM, X.PRECO_MAXIMO FROM 
+(SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS PRECO_MAXIMO FROM tabela_de_produtos
+GROUP BY EMBALAGEM) X WHERE X.PRECO_MAXIMO >= 10; -- Agora vamos fazer a mesma consulta que fizemos antes, mas utilizando a visão "VW_MAIORES_EMBALAGENS" para simplificar a consulta externa, segue abaixo;
+
+SELECT X.EMBALAGEM, X.PRECO_MAXIMO FROM 
+VW_MAIORES_EMBALAGENS X WHERE X.PRECO_MAXIMO >= 10; -- Selecionando a embalagem e o preço máximo para cada embalagem da visão "VW_MAIORES_EMBALAGENS" onde o preço máximo é maior ou igual a 10, utilizando a visão para simplificar a consulta externa.
 
 
 
