@@ -568,47 +568,58 @@ ORDER BY EMBALAGEM;
 -- O comando JOIN é usado para combinar registros de duas ou mais tabelas em um banco de dados com base em uma condição de correspondência entre as tabelas.
 -- Existem diferentes tipos de JOIN, como INNER JOIN, LEFT JOIN, RIGHT JOIN, CROSS JOIN e FULL JOIN cada um com uma finalidade específica para determinar quais registros serão incluídos no resultado da consulta.
 
--- Vamos utilizar um banco de dados fora do contexto de funcionários, para exemplificar melhor o uso do JOIN,
--- Utilizaremos o banco de dados "suco_vendas", que tem as tabelas "tabela_de_produtos", "tabela_de_vendedores" e "notas_fiscais".
-SELECT * FROM tabela_de_vendedores;
-SELECT * FROM notas_fiscais;
--- Selecionará todos os registros da tabela "tabela_de_vendedores" e "notas_fiscais".
-
 -- INNER JOIN: Retorna apenas os registros que têm correspondência em ambas as tabelas.
-SELECT * FROM tabela_de_vendedores A -- Seleciona todos os registros da tabela "tabela_de_vendedores" e atribui o alias "A" para facilitar a referência à tabela.
-INNER JOIN notas_fiscais B -- Realiza um INNER JOIN com a tabela "notas_fiscais" e atribui o alias "B".
-ON A.MATRICULA = B.MATRICULA; --- Retorna os registros onde a matrícula do vendedor na tabela "tabela_de_vendedores" corresponde à matrícula na tabela "notas_fiscais".
+
+-- Exemplo de uso do INNER JOIN:
+SELECT A.MATRICULA, A.NOME, B.NUMERO_DA_NOTA_FISCAL FROM -- Seleciona a matrícula, nome e número da nota fiscal.
+tabela_de_vendedores A -- Tabela "A" é um alias para a tabela de vendedores (pode utilizar o "AS" no meio).
+INNER JOIN notas_fiscais B -- Tabela "B" é um alias para a tabela de notas fiscais (pode utilizar o "AS" no meio).
 -- Perceba que chamamos a tabela "tabela_de_vendedores" de "A" e a tabela "notas_fiscais" de "B", para facilitar a escrita do código, mas isso é opcional.
 
---- Também podemos usar outros comandos com JOIN, como o GOUP BY;
-SELECT A.MATRICULA, A.NOME, COUNT(*) FROM -- Aplicando o COUNT (*) para contar o número de notas fiscais associadas a cada vendedor.
-tabela_de_vendedores A 
-INNER JOIN notas_fiscais B
-ON A.MATRICULA = B.MATRICULA
-GROUP BY A.MATRICULA, A.NOME; -- Retorna a matrícula, nome e o número de notas fiscais associadas a cada vendedor, agrupando os resultados por matrícula e nome do vendedor.
--- Perceba que o GROUP BY é aplicado após o JOIN, para agrupar os resultados com base na matrícula e nome do vendedor.
+--- Também podemos usar outros comandos com JOIN, como o GROUP BY;
+SELECT A.MATRICULA, A.NOME, COUNT(B.NUMERO_DA_NOTA_FISCAL) AS TOTAL_VENDAS FROM -- Seleciona a matrícula, nome e total de vendas.
+tabela_de_vendedores A -- Tabela "A" é a tabela de vendedores.
+INNER JOIN notas_fiscais B -- Tabela "B" é a tabela de notas fiscais
+ON A.MATRICULA = B.MATRICULA_VENDEDOR -- Condição de correspondência entre as tabelas, onde a matrícula do vendedor na tabela "A" deve corresponder à matrícula do vendedor na tabela "B".
+GROUP BY A.MATRICULA, A.NOME; -- Agrupa os resultados por matrícula e nome do vendedor para calcular o total de vendas para cada vendedor.
+
+--------------------------------------------------------------
 
 -- LEFT JOIN: Retorna todos os registros da tabela à esquerda (tabela "A") e os registros correspondentes da tabela à direita (tabela "B"). Se não houver correspondência, os campos da tabela "B" serão preenchidos com NULL.
+
+-- Exemplo de uso do LEFT JOIN:
 SELECT A.NOME, B.HOBBY FROM 
-TABELA_ESQUERDA A
-LEFT JOIN TABELA_DIREITA B
+TABELA_ESQUERDA AS A -- Resolvi utilizar o "AS" para deixar mais claro, mas ele é opcional.
+LEFT JOIN TABELA_DIREITA AS B -- Resolvi utilizar o "AS" para deixar mais claro, mas ele é opcional.
 ON A.IDENTIFICADOR = B.IDENTIFICADOR; -- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros da tabela "A" e os hobbies correspondentes da tabela "B". 
 -- Se um registro da tabela "A" não tiver um hobby correspondente na tabela "B", o campo do hobby será preenchido com NULL.
 
+--------------------------------------------------------------
+
 -- RIGHT JOIN: Retorna todos os registros da tabela à direita (tabela "B") e os registros correspondentes da tabela à esquerda (tabela "A"). Se não houver correspondência, os campos da tabela "A" serão preenchidos com NULL.
+
+-- Exemplo de uso do RIGHT JOIN:
 SELECT A.NOME, B.HOBBY FROM 
-TABELA_ESQUERDA A
-RIGHT JOIN TABELA_DIREITA B
+TABELA_ESQUERDA AS A
+RIGHT JOIN TABELA_DIREITA AS B
 ON A.IDENTIFICADOR = B.IDENTIFICADOR; -- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros da tabela "B" e os nomes correspondentes da tabela "A".
 -- Se um registro da tabela "B" não tiver um nome correspondente na tabela "A", o campo do nome será preenchido com NULL.
 
+--------------------------------------------------------------
+
 -- CROSS JOIN: Retorna o produto cartesiano de ambas as tabelas, ou seja, combina cada registro da tabela "A" com cada registro da tabela "B".
+
+-- Exemplo de uso do CROSS JOIN:
 SELECT A.NOME, B.HOBBY FROM
 TABELA_ESQUERDA A, TABELA_DIREITA B; -- Retorna o nome da tabela "A" e o hobby da tabela "B", combinando cada registro da tabela "A" com cada registro da tabela "B".
 -- O CROSS JOIN pode resultar em um número muito grande de registros, dependendo do número de registros em cada tabela, pois combina cada registro de uma tabela com todos os registros da outra tabela.
 -- Fique atento com a chamada da função CROSS JOIN, ela pode ser feita de duas formas: usando a palavra-chave CROSS JOIN ou simplesmente listando as tabelas separadas por vírgula, como no exemplo acima. Ambas as formas produzem o mesmo resultado, que é o produto cartesiano das duas tabelas.
 
+--------------------------------------------------------------
+
 -- FULL JOIN: Retorna todos os registros quando há uma correspondência em uma das tabelas. Se não houver correspondência, os campos da tabela sem correspondência serão preenchidos com NULL.
+
+-- Exemplo de uso do FULL JOIN:
 SELECT A.NOME, B.HOBBY FROM 
 TABELA_ESQUERDA A
 FULL JOIN TABELA_DIREITA B
@@ -715,6 +726,149 @@ SELECT A.NOME_DO_PRODUTO, A.EMBALAGEM, A.PRECO_DE_LISTA, X.MAIOR_PRECO,
 FROM tabela_de_produtos A INNER JOIN vw_maiores_embalagens X
 ON A.EMBALAGEM = X.EMBALAGEM;
 -- Esta consulta retorna o nome do produto, embalagem, preço de lista, preço máximo e o percentual de diferença entre o preço de lista e o preço máximo para os produtos que têm um preço de lista maior ou igual a 10, utilizando a visão "VW_MAIORES_EMBALAGENS" para obter os preços máximos e fazendo um INNER JOIN com a tabela "tabela_de_produtos" para obter as informações adicionais dos produtos.
+
+------------------------------------------------------------------------------------------
+
+--- FUNÇÕES DE STRING;
+-- As funções de string são usadas para manipular e formatar dados de texto em consultas SQL. 
+-- Elas permitem realizar operações como concatenar, extrair partes de uma string, converter para maiúsculas ou minúsculas, entre outras.
+
+--- Algumas das funções de string mais comuns incluem:
+
+-- CONCAT(): Concatena duas ou mais strings em uma única string.
+
+-- Exemplo de uso do CONCAT:
+SELECT CONCAT("SQL ", "Tutorial ", "is ", "fun!") AS ConcatenatedString; -- Esta consulta utiliza a função CONCAT para concatenar várias strings em uma única string, resultando em "SQL Tutorial is fun!".
+
+-- Utilizando o CONCAT para combinar o nome e o departamento dos funcionários:
+SELECT nome, departamento, CONCAT(nome, ' - ', departamento) AS nome_departamento
+FROM funcionarios; 
+-- Esta consulta retorna o nome, departamento e uma nova coluna "nome_departamento" que combina o nome do funcionário com o departamento usando a função CONCAT. 
+
+-- Mais um exemplo de uso do CONCAT, dessa vez utilizando a tabela "suco_vendas":
+SELECT CONCAT(NOME, ' (', CPF, ') ') AS RESULTADO FROM TABELA_DE_CLIENTES; 
+-- Esta consulta utiliza a função CONCAT para combinar o nome do cliente com seu CPF, formatando o resultado como "Nome (CPF)". O resultado é retornado na coluna "RESULTADO".
+
+--------------------------------------------------------------
+
+-- UPPER() ou UCASE(): Converte uma string para maiúsculas.
+
+-- Exemplo de uso do UPPER:
+SELECT UPPER("SQL Tutorial is FUN!");
+-- Esta consulta utiliza a função UPPER para converter a string "SQL Tutorial is FUN!" para maiúsculas, resultando em "SQL TUTORIAL IS FUN!".
+
+SELECT UCASE("SQL Tutorial is FUN!");
+-- Esta consulta utiliza a função UCASE para converter a string "SQL Tutorial is FUN!" para maiúsculas, resultando em "SQL TUTORIAL IS FUN!".
+
+-- Mais um exemplo do uso do UPPER:
+SELECT UPPER('olá, tudo bem?') AS RESULTADO;
+-- Esta consulta utiliza a função UPPER para converter a string 'olá, tudo bem?' para maiúsculas, resultando em 'OLÁ, TUDO BEM?'.
+
+-- Utilizando o UPPER para converter os nomes dos funcionários para maiúsculas:
+SELECT nome, UPPER(nome) AS nome_maiusculo
+FROM funcionarios;
+-- Esta consulta retorna o nome do funcionário e uma nova coluna "nome_maiusculo" que contém o nome do funcionário convertido para maiúsculas usando a função UPPER.
+
+--------------------------------------------------------------
+
+-- LOWER() ou LCASE(): Converte uma string para minúsculas.
+
+-- Exemplo de uso do LOWER:
+SELECT LOWER("SQL Tutorial is FUN!");
+-- Esta consulta utiliza a função LOWER para converter a string "SQL Tutorial is FUN!" para minúsculas, resultando em "sql tutorial is fun!".
+
+SELECT LCASE("SQL Tutorial is FUN!");
+-- Esta consulta utiliza a função LCASE para converter a string "SQL Tutorial is FUN!" para minúsculas, resultando em "sql tutorial is fun!".
+
+-- Mais um exemplo do uso do LOWER:
+SELECT LOWER('OLÁ, TUDO BEM?') AS RESULTADO;
+-- Esta consulta utiliza a função LOWER para converter a string 'OLÁ, TUDO BEM?' para minúsculas, resultando em 'olá, tudo bem?'.
+--------------------------------------------------------------
+
+-- SUBSTRING(): Extrai uma parte específica de uma string.
+
+-- Exemplo de uso do SUBSTRING:
+SELECT SUBSTRING("SQL Tutorial", 5, 3) AS ExtractString;
+-- Esta consulta utiliza a função SUBSTRING para extrair uma parte da string "SQL Tutorial". 
+-- O segundo argumento (5) indica a posição inicial da extração (começando do 1), e o terceiro argumento (3) indica o número de caracteres a serem extraídos.
+-- O resultado será "Tut", que são os caracteres a partir da posição 5 com um comprimento de 3.
+
+-- Outro exemplo de uso do SUBSTRING:
+SELECT SUBSTRING('OLÁ, TUDO BEM?', 6) AS RESULTADO;
+-- Esta consulta utiliza a função SUBSTRING para extrair uma parte da string 'OLÁ, TUDO BEM?'.
+-- O segundo argumento (6) indica a posição inicial da extração (começando do 1) e, como o terceiro argumento não foi especificado, a função irá extrair todos os caracteres a partir da posição 6 até o final da string.
+-- O resultado será 'TUDO BEM?', que são os caracteres a partir da posição 6 até o final da string.
+
+--------------------------------------------------------------
+
+-- LENGTH(): Retorna o comprimento de uma string.
+
+-- Exemplo de uso do LENGTH:
+SELECT LENGTH("SQL Tutorial") AS LengthOfString;
+-- Esta consulta utiliza a função LENGTH para calcular o comprimento da string "SQL Tutorial". 
+-- O resultado será 12, que é o número de caracteres na string, incluindo espaços.
+
+--------------------------------------------------------------
+
+-- TRIM(): Remove espaços em branco do início e do fim de uma string.
+
+-- Exemplo de uso do TRIM:
+SELECT TRIM('    SQL Tutorial    ') AS TrimmedString;
+-- Esta consulta utiliza a função TRIM para remover os espaços em branco do início e do fim da string '    SQL Tutorial    '.
+-- O resultado será 'SQL Tutorial', que é a string original sem os espaços em branco extras no início e no fim.
+
+-- Outro exemplo de uso do TRIM:
+SELECT TRIM('    OLÁ    ') AS RESULTADO;
+-- Esta consulta utiliza a função TRIM para remover os espaços em branco do início e do fim da string '    OLÁ    '.
+-- O resultado será 'OLÁ', que é a string original sem os espaços em branco extras no início e no fim.
+
+--------------------------------------------------------------
+
+-- LTRIM(): Remove espaços em branco do início de uma string.
+
+-- Exemplo de uso do LTRIM:
+SELECT LTRIM("     SQL Tutorial") AS LeftTrimmedString;
+-- Esta consulta utiliza a função LTRIM para remover os espaços em branco do início da string "     SQL Tutorial".
+-- O resultado será "SQL Tutorial", que é a string original sem os espaços em branco extras no início.
+
+-- Outro exemplo de uso do LTRIM:
+SELECT LTRIM('    OLÁ') AS RESULTADO;
+-- Esta consulta utiliza a função LTRIM para remover os espaços em branco do início da string '    OLÁ'.
+-- O resultado será 'OLÁ', que é a string original sem os espaços em branco extras no início.
+
+--------------------------------------------------------------
+
+-- RTRIM(): Remove espaços em branco do fim de uma string.
+
+-- Exemplo de uso do RTRIM:
+SELECT RTRIM("SQL Tutorial     ") AS RightTrimmedString;
+-- Esta consulta utiliza a função RTRIM para remover os espaços em branco do fim da string "SQL Tutorial     ".
+-- O resultado será "SQL Tutorial", que é a string original sem os espaços em branco extras no fim.
+
+-- Outro exemplo de uso do RTRIM:
+SELECT RTRIM('OLÁ     ') AS RESULTADO;
+-- Esta consulta utiliza a função RTRIM para remover os espaços em branco do fim da string 'OLÁ     '.
+-- O resultado será 'OLÁ', que é a string original sem os espaços em branco extras no fim.
+
+--------------------------------------------------------------
+
+-- Combinando funções de string:
+SELECT nome, UPPER(nome) AS nome_maiusculo, LOWER(nome) AS nome_minusculo, CONCAT(nome, ' - ', departamento) AS nome_departamento
+FROM funcionarios; 
+-- Esta consulta retorna o nome do funcionário, o nome em maiúsculas, o nome em minúsculas e uma concatenação do nome com o departamento,
+-- utilizando as funções UPPER, LOWER e CONCAT para manipular os dados de texto.
+
+-- Mais combinações de funções de string:
+SELECT nome, LENGTH(nome) AS comprimento_nome, TRIM(nome) AS nome_sem_espacos, SUBSTRING(nome, 1, 3) AS primeiros_tres_caracteres
+FROM funcionarios; 
+-- Esta consulta retorna o nome do funcionário, o comprimento do nome, o nome sem espaços em branco no início e no fim, e os primeiros três caracteres do nome, 
+-- utilizando as funções LENGTH, TRIM e SUBSTRING para manipular os dados de texto.
+
+-- Outro exemplo de combinação de funções de string:
+SELECT nome, CONCAT(UPPER(nome), ' - ', LOWER(departamento)) AS nome_departamento_formatado
+FROM funcionarios;
+-- Esta consulta retorna o nome do funcionário e uma concatenação do nome em maiúsculas com o departamento em minúsculas, 
+-- utilizando as funções UPPER, LOWER e CONCAT para formatar os dados de texto.
 
 ------------------------------------------------------------------------------------------
 
@@ -918,7 +1072,7 @@ CREATE TABLE tabela_de_vendedores (
 
 ------------------------------------------------------------------------------------------
 
----- AULA 02 - SELECT;
+---- AULA (02) - SELECT;
 
 -- SELECT (considerando que aqui não inseri os dados, só estou anotando os comandos aprendidos);
 USE sucos_vendas;
@@ -961,7 +1115,7 @@ AND EMBALAGEM = 'PET'; -- Selecionando todos os produtos cujo sabor contém a pa
 
 ------------------------------------------------------------------------------------------
 
----- AULA 03 - SELECT COM FUNÇÕES DE AGRUPAMENTO, ORDEM E FILTRO (DISTINCT, LIMIT, ORDER BY, GROUP BY, HAVING);
+---- AULA (03) - SELECT COM FUNÇÕES DE AGRUPAMENTO, ORDEM E FILTRO (DISTINCT, LIMIT, ORDER BY, GROUP BY, HAVING);
 --- Vendo formas diferentes de exibir os resultados;
 SELECT EMBALAGEM, TAMANHO FROM tabela_de_produtos; -- Selecionando as colunas "EMBALAGEM" e "TAMANHO" da tabela "tabela_de_produtos".
 
@@ -1050,7 +1204,7 @@ ORDER BY EMBALAGEM; -- Selecionando a embalagem, o status do preço e a média d
 
 ------------------------------------------------------------------------------------------
 
----- AULA 04 - SELECT COM JUNÇÃO DE TABELAS (JOIN), SUBQUERY E VIEW;
+---- AULA (04) - SELECT COM JUNÇÃO DE TABELAS (JOIN), SUBQUERY E VIEW;
 
 SELECT * FROM tabela_de_vendedores; -- Selecionando todas as colunas da tabela "tabela_de_vendedores".
 
