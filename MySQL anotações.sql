@@ -738,7 +738,8 @@ ON A.EMBALAGEM = X.EMBALAGEM;
 -- CONCAT(): Concatena duas ou mais strings em uma única string.
 
 -- Exemplo de uso do CONCAT:
-SELECT CONCAT("SQL ", "Tutorial ", "is ", "fun!") AS ConcatenatedString; -- Esta consulta utiliza a função CONCAT para concatenar várias strings em uma única string, resultando em "SQL Tutorial is fun!".
+SELECT CONCAT("SQL ", "Tutorial ", "is ", "fun!") AS ConcatenatedString; 
+-- Esta consulta utiliza a função CONCAT para concatenar várias strings em uma única string, resultando em "SQL Tutorial is fun!".
 
 -- Utilizando o CONCAT para combinar o nome e o departamento dos funcionários:
 SELECT nome, departamento, CONCAT(nome, ' - ', departamento) AS nome_departamento
@@ -1274,6 +1275,7 @@ GROUP BY EMBALAGEM) X WHERE X.PRECO_MAXIMO >= 10; -- Agora vamos fazer a mesma c
 
 SELECT X.EMBALAGEM, X.PRECO_MAXIMO FROM 
 VW_MAIORES_EMBALAGENS X WHERE X.PRECO_MAXIMO >= 10; -- Selecionando a embalagem e o preço máximo para cada embalagem da visão "VW_MAIORES_EMBALAGENS" onde o preço máximo é maior ou igual a 10, utilizando a visão para simplificar a consulta externa.
+
 
 
 
