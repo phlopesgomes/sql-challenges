@@ -873,6 +873,177 @@ FROM funcionarios;
 
 ------------------------------------------------------------------------------------------
 
+--- FUNÇÕES DE DATAS;
+-- As funções de datas são usadas para manipular e formatar dados de data e hora em consultas SQL.
+-- Elas permitem realizar operações como extrair partes de uma data, calcular diferenças entre datas, formatar datas em diferentes formatos, entre outras.
+
+-- Algumas das funções de datas mais comuns incluem: 
+
+-- NOW(): Retorna a data e hora atuais do sistema.
+
+-- Exemplo de uso do NOW:
+SELECT NOW() AS DataHoraAtual;
+-- Esta consulta utiliza a função NOW para obter a data e hora atuais do sistema, retornando o resultado na coluna "DataHoraAtual".
+
+--------------------------------------------------------------
+
+-- ADDTIME(): Adiciona um intervalo de tempo a uma data ou hora.
+
+-- Exemplo de uso do ADDTIME:
+SELECT ADDTIME(NOW(), '02:30:00') AS DataHoraFutura;
+-- Esta consulta utiliza a função ADDTIME para adicionar um intervalo de 2 horas e 30 minutos à data e hora atuais retornadas pela função NOW, resultando em uma data e hora futura.
+
+-- Outro exemplo de uso do ADDTIME:
+SELECT ADDTIME('2024-06-01 10:00:00', '01:15:00') AS DataHoraFutura;
+-- Esta consulta utiliza a função ADDTIME para adicionar um intervalo de 1 hora e 15 minutos à data e hora '2024-06-01 10:00:00', resultando em '2024-06-01 11:15:00'.
+
+--------------------------------------------------------------
+
+-- ADDDATE(): Adiciona um intervalo de dias a uma data.
+
+-- Exemplo de uso do ADDDATE:
+SELECT ADDDATE(CURDATE(), INTERVAL 7 DAY) AS DataFutura;
+-- Esta consulta utiliza a função ADDDATE para adicionar um intervalo de 7 dias à data atual retornada pela função CURDATE, resultando em uma data futura.
+
+-- Outro exemplo de uso do ADDDATE:
+SELECT ADDDATE('2024-06-01', INTERVAL 2 WEEK) AS DataFutura;
+-- Esta consulta utiliza a função ADDDATE para adicionar um intervalo de 2 semanas à data '2024-06-01', resultando em '2024-06-15'.
+
+--------------------------------------------------------------
+
+-- DATEDIFF(): Retorna a diferença em dias entre duas datas.
+
+-- Exemplo de uso do DATEDIFF:
+SELECT DATEDIFF('2024-06-30', '2024-06-01') AS DiferencaDias;
+-- Esta consulta utiliza a função DATEDIFF para calcular a diferença em dias entre as datas '2024-06-30' e '2024-06-01', resultando em 29 dias.
+
+
+-- Outro exemplo de uso do DATEDIFF:
+SELECT DATEDIFF(CURDATE(), '2024-01-01') AS DiasDesdeAnoNovo;
+-- Esta consulta utiliza a função DATEDIFF para calcular a diferença em dias entre a data atual retornada pela função CURDATE e a data '2024-01-01', resultando no número de dias desde o início do ano.
+
+--------------------------------------------------------------
+
+-- TIMESTAMPDIFF(): Retorna a diferença entre duas datas em uma unidade de tempo especificada (como segundos, minutos, horas, dias, etc.).
+
+-- Exemplo de uso do TIMESTAMPDIFF:
+SELECT TIMESTAMPDIFF(HOUR, '2024-06-01 10:00:00', '2024-06-01 15:30:00') AS DiferencaHoras;
+-- Esta consulta utiliza a função TIMESTAMPDIFF para calcular a diferença em horas entre as datas '2024-06-01 10:00:00' e '2024-06-01 15:30:00', resultando em 5 horas.
+
+-- Outro exemplo de uso do TIMESTAMPDIFF:
+SELECT TIMESTAMPDIFF(DAY, '2024-01-01', CURDATE()) AS DiasDesdeAnoNovo;
+-- Esta consulta utiliza a função TIMESTAMPDIFF para calcular a diferença em dias entre a data '2024-01-01' e a data atual retornada pela função CURDATE, resultando no número de dias desde o início do ano.
+
+-- Outro exemplo de uso do TIMESTAMPDIFF:
+SELECT TIMESTAMPDIFF(MINUTE, '2024-06-01 10:00:00', '2024-06-01 15:30:00') AS DiferencaMinutos;
+-- Esta consulta utiliza a função TIMESTAMPDIFF para calcular a diferença em minutos entre as datas '2024-06-01 10:00:00' e '2024-06-01 15:30:00', resultando em 330 minutos.
+
+-- Outro exemplo de uso do TIMESTAMPDIFF:
+SELECT TIMESTAMPDIFF(SECOND, '2024-06-01 10:00:00', '2024-06-01 15:30:00') AS DiferencaSegundos;
+-- Esta consulta utiliza a função TIMESTAMPDIFF para calcular a diferença em segundos entre as datas '2024-06-01 10:00:00' e '2024-06-01 15:30:00', resultando em 19800 segundos.
+
+--------------------------------------------------------------
+
+-- CURDATE(): Retorna a data atual do sistema.
+
+-- Exemplo de uso do CURDATE:
+SELECT CURDATE() AS DataAtual;
+-- Esta consulta utiliza a função CURDATE para obter a data atual do sistema, retornando o resultado na coluna "DataAtual".
+
+--------------------------------------------------------------
+
+-- CURTIME(): Retorna a hora atual do sistema.
+
+-- Exemplo de uso do CURTIME:
+SELECT CURTIME() AS HoraAtual;
+-- Esta consulta utiliza a função CURTIME para obter a hora atual do sistema, retornando o resultado na coluna "HoraAtual".
+
+--------------------------------------------------------------
+
+-- CURRENT_TIME(): Retorna a hora atual do sistema (sem a data).
+
+-- Exemplo de uso do CURRENT_TIME:
+SELECT CURRENT_TIME() AS HoraAtual;
+-- Esta consulta utiliza a função CURRENT_TIME para obter a hora atual do sistema, retornando o resultado na coluna "HoraAtual".
+
+--------------------------------------------------------------
+
+-- CURRENT_TIMESTAMP(): Retorna a data e hora atuais do sistema.
+
+-- Exemplo de uso do CURRENT_TIMESTAMP:
+SELECT CURRENT_TIMESTAMP() AS DataHoraAtual;
+-- Esta consulta utiliza a função CURRENT_TIMESTAMP para obter a data e hora atuais do sistema, retornando o resultado na coluna "DataHoraAtual".
+
+--------------------------------------------------------------
+
+-- CURRENT_DATE(): Retorna a data atual do sistema (sem a hora).
+
+-- Exemplo de uso do CURRENT_DATE:
+SELECT CURRENT_DATE() AS DataAtual;
+-- Esta consulta utiliza a função CURRENT_DATE para obter a data atual do sistema, retornando o resultado na coluna "DataAtual". 
+-- A função CURRENT_DATE é equivalente à função CURDATE, ambas retornam apenas a data atual sem a hora.
+
+--------------------------------------------------------------
+
+-- DATE(): Extrai a parte da data de um valor de data e hora.
+
+-- Exemplo de uso do DATE:
+SELECT DATE(NOW()) AS DataAtual;
+-- Esta consulta utiliza a função DATE para extrair apenas a parte da data do valor retornado pela função NOW, resultando na data atual sem a hora.
+
+--------------------------------------------------------------
+
+-- YEAR(): Extrai o ano de um valor de data.
+
+-- Exemplo de uso do YEAR:
+SELECT YEAR(CURDATE()) AS AnoAtual;
+-- Esta consulta utiliza a função YEAR para extrair o ano da data atual retornada pela função CURDATE, resultando no ano atual.
+
+--------------------------------------------------------------
+
+-- MONTH(): Extrai o mês de um valor de data.
+
+-- Exemplo de uso do MONTH:
+SELECT MONTH(CURDATE()) AS MesAtual;
+-- Esta consulta utiliza a função MONTH para extrair o mês da data atual retornada pela função CURDATE, resultando no mês atual.
+
+--------------------------------------------------------------
+
+-- DAY(): Extrai o dia de um valor de data.
+
+-- Exemplo de uso do DAY:
+SELECT DAY(CURDATE()) AS DiaAtual;
+-- Esta consulta utiliza a função DAY para extrair o dia da data atual retornada pela função CURDATE, resultando no dia atual.
+
+--------------------------------------------------------------
+
+-- DAYNAME(): Retorna o nome do dia da semana para um valor de data.
+
+-- Exemplo de uso do DAYNAME:
+SELECT DAYNAME(CURDATE()) AS NomeDoDia;
+-- Esta consulta utiliza a função DAYNAME para obter o nome do dia da semana correspondente à data atual retornada pela função CURDATE, resultando no nome do dia atual.
+
+--------------------------------------------------------------
+
+-- MONTHNAME(): Retorna o nome do mês para um valor de data.
+
+-- Exemplo de uso do MONTHNAME:
+SELECT MONTHNAME(CURDATE()) AS NomeDoMes;
+-- Esta consulta utiliza a função MONTHNAME para obter o nome do mês correspondente à data atual retornada pela função CURDATE, resultando no nome do mês atual.
+
+--------------------------------------------------------------
+
+-- YEAR(): Retorna o ano de um valor de data.
+
+-- Exemplo de uso do YEAR:
+SELECT YEAR(CURDATE()) AS AnoAtual;
+-- Esta consulta utiliza a função YEAR para extrair o ano da data atual retornada pela função CURDATE, resultando no ano atual.
+
+--------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+
 --- UPDATE;
 -- O comando UPDATE é usado para modificar os dados existentes em uma tabela de banco de dados.
 
@@ -1275,7 +1446,6 @@ GROUP BY EMBALAGEM) X WHERE X.PRECO_MAXIMO >= 10; -- Agora vamos fazer a mesma c
 
 SELECT X.EMBALAGEM, X.PRECO_MAXIMO FROM 
 VW_MAIORES_EMBALAGENS X WHERE X.PRECO_MAXIMO >= 10; -- Selecionando a embalagem e o preço máximo para cada embalagem da visão "VW_MAIORES_EMBALAGENS" onde o preço máximo é maior ou igual a 10, utilizando a visão para simplificar a consulta externa.
-
 
 
 
