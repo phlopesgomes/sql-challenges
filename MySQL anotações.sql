@@ -1039,8 +1039,179 @@ SELECT MONTHNAME(CURDATE()) AS NomeDoMes;
 SELECT YEAR(CURDATE()) AS AnoAtual;
 -- Esta consulta utiliza a função YEAR para extrair o ano da data atual retornada pela função CURDATE, resultando no ano atual.
 
+------------------------------------------------------------------------------------------
+
+--- FUNÇÕES MATEMÁTICAS;
+-- As funções matemáticas são usadas para realizar cálculos numéricos diretamente nos dados armazenados no banco. 
+-- Elas permitem manipular valores para arredondamentos, cálculos de precisão e estatísticas básicas antes mesmo dos dados chegarem ao Python ou Excel.
+
+-- Abriremos um novo script e começaremos com um exemplo de expressão numérica:
+SELECT (23+((25-2)/2)*45) AS RESULTADO;
+-- Executando o código, obtemos o resultado 540,5.
+
+-- Principais Funções Matemáticas:
+
+-- 1. ROUND (Arredondamento): Arredonda um número para um número específico de casas decimais. Muito usado em valores monetários.
+
+-- Exemplo de uso do ROUND:
+SELECT ROUND(12.33333232323) AS RESULTADO;
+-- Arredondará para 12 (Pois a primeira casa decimal é menor que 5).
+
+-- Outro exemplo de uso do ROUND:
+SELECT ROUND(12.7777232323) AS RESULTADO;
+-- Arredondará para 13 (Pois a primeira casa decimal é maior ou igual a 5).
+
 --------------------------------------------------------------
 
+-- 2. FLOOR (Arredondamento para baixo): Retorna o maior valor inteiro menor ou igual ao número. "Corta" as casas decimais.
+
+-- Exemplo de uso do FLOOR:
+SELECT FLOOR(12.7777232323) AS RESULTADO;
+-- Retorna 12 (Ignora que está perto de 13 e "puxa" para baixo).
+
+--------------------------------------------------------------
+
+-- 3. CEIL ou CEILING (Arredondamento para cima): Retorna o menor valor inteiro maior ou igual ao número.
+
+-- Exemplo de uso do CEILING:
+SELECT CEILING(12.33333232323) AS RESULTADO;
+-- Retorna 13 (Mesmo estando perto de 12, ele "força" o arredondamento para cima).
+
+--------------------------------------------------------------
+
+-- 4. ABS (Valor Absoluto): Retorna o valor positivo de um número, ignorando o sinal de menos. Útil para calcular diferenças.
+
+-- Exemplo de uso do ABS:
+SELECT ABS(10 - 25) AS DIFERENCA; 
+-- Retorna 15 (Transforma o resultado negativo em positivo).
+
+--------------------------------------------------------------
+
+-- 5. SQRT (Raiz Quadrada): Retorna a raiz quadrada do número.
+
+-- Exemplo de uso do SQRT:
+SELECT SQRT(64) AS RESULTADO; 
+-- Retorna 8.
+
+--------------------------------------------------------------
+
+-- 6. POWER (Potência): Eleva um número a uma determinada potência.
+
+-- Exemplo de uso do POWER:
+SELECT POWER(2, 3) AS RESULTADO; 
+-- Retorna 8 (Cálculo: 2 * 2 * 2).
+
+--------------------------------------------------------------
+
+-- 7. RAND (Aleatório): Retorna um número aleatório.
+
+-- Exemplo de uso do RAND:
+SELECT RAND() AS NUMERO_ALEATORIO;
+-- Gera um número decimal aleatório entre 0 e 1 (Ex: 0.8423...).
+
+--------------------------------------------------------------
+
+-- Vamos utilizar um novo exemplo agora utilizando a tabela "suco_vendas".
+-- Primeiro, vamos selecionar o número, a quantidade e o preço dos registros da tabela "itens_notas_fiscais";
+SELECT NUMERO, QUANTIDADE, PRECO
+FROM ITENS_NOTAS_FISCAIS;
+
+-- Para descobrir o faturamento, basta multiplicar a quantidade pelo preço de cada item. 
+-- Podemos apresentar esse resultado numa nova coluna chamada "faturamento";
+SELECT NUMERO, QUANTIDADE, PRECO, QUANTIDADE * PRECO AS FATURAMENTO
+FROM ITENS_NOTAS_FISCAIS;
+
+-- Veremos, no entanto, que os valores na coluna de faturamento vêm com muitas casas decimais. 
+-- Como estamos lidando com preços, bastaria que tivessem apenas duas casas. Como solução, utilizaremos a função ROUND();
+SELECT NUMERO, QUANTIDADE, PRECO, ROUND(QUANTIDADE * PRECO, 2) AS FATURAMENTO
+FROM ITENS_NOTAS_FISCAIS;
+
+------------------------------------------------------------------------------------------
+
+--- CONVERSÃO DE DADOS;
+-- A conversão de dados é o processo de transformar um dado de um tipo (ex: Data ou Número) para outro (ex: Texto) durante a consulta. 
+-- Isso é essencial pois certas funções só aceitam tipos específicos de dados, e não queremos alterar a estrutura original da tabela.
+
+-- DATE_FORMAT (Conversão de Data para Texto):
+-- Usada para formatar datas em strings seguindo um padrão específico. 
+
+-- Principais especificadores: 
+-- %d: Dia do mês com dois dígitos (01 até 31).
+-- %e: Dia do mês com um ou dois dígitos (1 até 31).
+-- %m: Mês com dois dígitos (01 até 12).
+-- %c: Mês com um ou dois dígitos (1 até 12).
+-- %M: Nome do mês por extenso (January, February...).
+-- %b: Nome do mês abreviado (Jan, Feb...).
+-- %Y: Ano com quatro dígitos (2026).
+-- %y: Ano com dois dígitos (26).
+-- %H: Hora com dois dígitos no formato 24h (00 até 23).
+-- %h: Hora com dois dígitos no formato 12h (01 até 12).
+-- %i: Minutos com dois dígitos (00 até 59).
+-- %s: Segundos com dois dígitos (00 até 59).
+-- %W: Nome do dia da semana por extenso (Monday, Tuesday...).
+-- %a: Nome do dia da semana abreviado (Mon, Tue...).
+-- %U: Número da semana no ano (00 até 53).
+
+-- Exemplo de uso do DATE_FORMAT (Formato Brasileiro):
+SELECT DATE_FORMAT(CURRENT_TIMESTAMP(), '%d/%m/%Y') AS DATA_BR;
+-- Retorna a data atual no formato dia/mês/ano completo (Ex: 13/03/2026).
+
+-- Outro exemplo de uso do DATE_FORMAT (Relatório com Dia da Semana):
+SELECT DATE_FORMAT(CURRENT_TIMESTAMP(), '%W, %d de %m de %Y') AS DATA_EXTENSO;
+-- Retorna o dia da semana e a data formatada (Ex: Friday, 13 de 03 de 2026).
+
+--------------------------------------------------------------
+
+-- CONCAT():
+-- Ocorre quando o próprio MySQL converte o dado automaticamente para que uma função funcione.
+
+-- Exemplo do uso do CONCAT():
+SELECT CONCAT('O dia de hoje é: ', CURRENT_TIMESTAMP()) AS RESULTADO;
+-- O CONCAT (função de texto) aceita a Data e a transforma em texto automaticamente, ou seja, retorna a data atual e o horário.
+-- Retorno: "O dia de hoje é: 2026-03-13 13:20:00"
+
+-- Outro exemplo de CONCAT(), agora utilizando DATE_FORMAT:
+SELECT CONCAT('O dia de hoje é: ', DATE_FORMAT(CURRENT_TIMESTAMP(),'%Y') ) AS RESULTADO;
+-- O especificador %Y (maiúsculo) extrai o ano com 4 dígitos.
+-- Retorno: "O dia de hoje é: 2026"
+
+-- Outro exemplo de CONCAT(), utilizando DATE_FORMAT:
+SELECT CONCAT('O dia de hoje é: ', DATE_FORMAT(CURRENT_TIMESTAMP(),'%y') ) AS RESULTADO;
+-- O especificador %y (minúsculo) extrai o ano com apenas os 2 últimos dígitos.
+-- Retorno: "O dia de hoje é: 26"
+
+-- Outro exemplo de CONCAT(), utilizando DATE_FORMAT:
+SELECT CONCAT('O dia de hoje é: ', DATE_FORMAT(CURRENT_TIMESTAMP(),'%m/%y') ) AS RESULTADO;
+-- O %m traz o mês numérico e o %y o ano curto, separados por uma barra.
+-- Retorno: "O dia de hoje é: 03/26"
+
+-- Outro exemplo de CONCAT(), utilizando DATE_FORMAT:
+SELECT CONCAT('O dia de hoje é: ', DATE_FORMAT(CURRENT_TIMESTAMP(),'%d/%m/%Y') ) AS RESULTADO;
+-- O formato clássico brasileiro: dia, mês e ano de 4 dígitos.
+-- Retorno: "O dia de hoje é: 13/03/2026"
+
+-- Outro exemplo de CONCAT(), utilizando DATE_FORMAT:
+SELECT CONCAT('O dia de hoje é: ', DATE_FORMAT(CURRENT_TIMESTAMP(),'%W, %d/%m/%Y') ) AS RESULTADO;
+-- O %W traz o nome do dia da semana por extenso em inglês.
+-- Retorno: "O dia de hoje é: Friday, 13/03/2026"
+
+-- Outro exemplo de CONCAT(), utilizando DATE_FORMAT:
+SELECT CONCAT('O dia de hoje é: ', DATE_FORMAT(CURRENT_TIMESTAMP(),'%d/%m/%Y - %U') ) AS RESULTADO;
+-- O %U indica o número da semana no ano (de 00 a 53).
+-- Retorno: "O dia de hoje é: 13/03/2026 - 10" (Estamos na 10ª semana do ano).
+
+--------------------------------------------------------------
+
+-- CONVERT (Conversão de Tipos):
+-- Força a transformação de um valor para um tipo específico (CHAR, DATE, DECIMAL, etc).
+
+-- Exemplo de uso do CONVERT (Número para Texto):
+SELECT CONVERT(23.3, CHAR) AS RESULTADO;
+-- Transforma o número 23.3 em uma String (texto), permitindo usar funções de texto nele.
+
+-- Outro exemplo de uso do CONVERT (Garantindo tipo para Substring):
+SELECT SUBSTRING(CONVERT(23.3, CHAR), 1, 2) AS RESULTADO;
+-- Converte para texto e extrai os 2 primeiros caracteres. Retorna "23".
 
 ------------------------------------------------------------------------------------------
 
