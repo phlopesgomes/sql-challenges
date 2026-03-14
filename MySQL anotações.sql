@@ -1459,6 +1459,7 @@ AND EMBALAGEM = 'PET'; -- Selecionando todos os produtos cujo sabor contém a pa
 ------------------------------------------------------------------------------------------
 
 ---- AULA (03) - SELECT COM FUNÇÕES DE AGRUPAMENTO, ORDEM E FILTRO (DISTINCT, LIMIT, ORDER BY, GROUP BY, HAVING);
+
 --- Vendo formas diferentes de exibir os resultados;
 SELECT EMBALAGEM, TAMANHO FROM tabela_de_produtos; -- Selecionando as colunas "EMBALAGEM" e "TAMANHO" da tabela "tabela_de_produtos".
 
@@ -1618,7 +1619,112 @@ GROUP BY EMBALAGEM) X WHERE X.PRECO_MAXIMO >= 10; -- Agora vamos fazer a mesma c
 SELECT X.EMBALAGEM, X.PRECO_MAXIMO FROM 
 VW_MAIORES_EMBALAGENS X WHERE X.PRECO_MAXIMO >= 10; -- Selecionando a embalagem e o preço máximo para cada embalagem da visão "VW_MAIORES_EMBALAGENS" onde o preço máximo é maior ou igual a 10, utilizando a visão para simplificar a consulta externa.
 
+------------------------------------------------------------------------------------------
 
+---- AULA (05) - FUNÇÕES NO MYSQL (TEXTO, DATA, MATEMÁTICA E CONVERSÃO);
+
+-- FUNÇÕES DE TEXTO (String Functions);
+
+SELECT LTRIM('    OLÁ') AS RESULTADO; 
+-- Remove espaços em branco à esquerda. Retorno: 'OLÁ'.
+
+SELECT RTRIM('OLÁ     ') AS RESULTADO; 
+-- Remove espaços em branco à direita. Retorno: 'OLÁ'.
+
+SELECT TRIM('    OLÁ    ') AS RESULTADO; 
+-- Remove espaços em branco de ambos os lados. Retorno: 'OLÁ'.
+
+SELECT CONCAT('OLÁ', ' ', 'TUDO BEM','?') AS RESULTADO; 
+-- Junta (concatena) várias strings em uma só. Retorno: 'OLÁ TUDO BEM?'.
+
+SELECT UPPER('olá, tudo bem?') AS RESULTADO; 
+-- Converte todo o texto para letras maiúsculas. Retorno: 'OLÁ, TUDO BEM?'.
+
+SELECT LOWER('OLÁ, TUDO BEM?') AS RESULTADO; 
+-- Converte todo o texto para letras minúsculas. Retorno: 'olá, tudo bem?'.
+
+SELECT SUBSTRING('OLÁ, TUDO BEM?', 6) AS RESULTADO; 
+-- Extrai uma parte do texto começando da posição 6 até o fim. Retorno: 'TUDO BEM?'.
+
+SELECT SUBSTRING('OLÁ, TUDO BEM?', 6, 4) AS RESULTADO; 
+-- Extrai uma parte do texto começando da posição 6, pegando apenas 4 caracteres. Retorno: 'TUDO'.
+
+SELECT CONCAT(NOME, ' (', CPF, ') ') AS RESULTADO FROM TABELA_DE_CLIENTES; 
+-- Exemplo prático: Cria uma string formatada com o nome e o CPF entre parênteses para cada cliente.
+
+--------------------------------------------------------------
+
+-- FUNÇÕES DE DATA (Date Functions);
+
+SELECT CURDATE(); 
+-- Retorna a data atual do sistema (AAAA-MM-DD).
+
+SELECT CURRENT_TIME(); 
+-- Retorna a hora atual do sistema.
+
+SELECT CURRENT_TIMESTAMP(); 
+-- Retorna a data e a hora atuais juntas.
+
+SELECT YEAR(CURRENT_TIMESTAMP()); 
+-- Extrai apenas o ano de uma data.
+
+SELECT DAY(CURRENT_TIMESTAMP()); 
+-- Extrai apenas o dia de uma data.
+
+SELECT MONTH(CURRENT_TIMESTAMP()); 
+-- Extrai o número do mês (1 a 12).
+
+SELECT MONTHNAME(CURRENT_TIMESTAMP()); 
+-- Retorna o nome do mês por extenso (em inglês).
+
+SELECT DATEDIFF(CURRENT_TIMESTAMP(), '2019-01-01') AS RESULTADO; 
+-- Calcula a diferença em dias entre duas datas.
+
+SELECT DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL 5 DAY) AS RESULTADO; 
+-- Subtrai um intervalo de tempo de uma data (neste caso, 5 dias atrás).
+
+SELECT DISTINCT DATA_VENDA, DAYNAME(DATA_VENDA) AS DIA, MONTHNAME(DATA_VENDA) AS MES, YEAR(DATA_VENDA) AS ANO FROM NOTAS_FISCAIS;
+-- Exemplo prático: Cria um relatório detalhando o nome do dia, o nome do mês e o ano de cada venda.
+
+--------------------------------------------------------------
+
+-- FUNÇÕES MATEMÁTICAS;
+
+SELECT (23+((25-2)/2)*45) AS RESULTADO; 
+-- Realiza operações matemáticas básicas seguindo a ordem de precedência.
+
+SELECT CEILING(12.33333232323) AS RESULTADO; 
+-- Arredonda o valor sempre para cima (Próximo inteiro). Retorno: 13.
+
+SELECT ROUND(12.7777232323) AS RESULTADO; 
+-- Arredonda para o inteiro mais próximo (ou para casas decimais se especificado). Retorno: 13.
+
+SELECT FLOOR(12.7777232323) AS RESULTADO; 
+-- Arredonda o valor sempre para baixo (Ignora as decimais). Retorno: 12.
+
+SELECT RAND() AS RESULTADO; 
+-- Gera um número aleatório entre 0 e 1.
+
+SELECT NUMERO, QUANTIDADE, PRECO, QUANTIDADE * PRECO AS FATURAMENTO FROM ITENS_NOTAS_FISCAIS;
+-- Calcula o faturamento multiplicando quantidade por preço para cada item.
+
+SELECT NUMERO, QUANTIDADE, PRECO, ROUND(QUANTIDADE * PRECO, 2) AS FATURAMENTO FROM ITENS_NOTAS_FISCAIS;
+-- Realiza o mesmo cálculo de faturamento, mas arredonda o resultado para 2 casas decimais.
+
+--------------------------------------------------------------
+
+-- FUNÇÕES DE CONVERSÃO;
+
+SELECT CONCAT('O dia de hoje é : ', CURRENT_TIMESTAMP()) AS RESULTADO; 
+-- Conversão Implícita: O SQL transforma a data em texto para poder concatenar.
+
+SELECT CONCAT('O dia de hoje é : ', DATE_FORMAT(CURRENT_TIMESTAMP(), '%W, %d/%m/%Y - %U') ) AS RESULTADO;
+-- Usa DATE_FORMAT para converter a data em um texto formatado personalizado (Dia da semana, dia/mês/ano e número da semana).
+
+SELECT SUBSTRING(CONVERT(23.3, CHAR), 1, 1) AS RESULTADO; 
+-- Converte o número 23.3 para o tipo Texto (CHAR) e extrai o primeiro caractere. Retorno: '2'.
+
+------------------------------------------------------------------------------------------
 
 
 
