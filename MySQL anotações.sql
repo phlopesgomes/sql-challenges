@@ -17,189 +17,11 @@
 
 -------------------------------------------------------------------------------------------
 
---- "CRATE TABLE";
--- O comando "CREATE TABLE" é usado para criar uma nova tabela em um banco de dados
--- Exemplo de uso do "CREATE TABLE":
-CREATE TABLE funcionarios (
-    id INT PRIMARY KEY, 
-    nome VARCHAR(100),
-    departamento VARCHAR(50),
-    salario DECIMAL(10, 2)
-); -- (sempre usando vírgula para separar os campos e ponto e vírgula no final do comando).
-
---- Tipos de dados mais comuns em SQL:
--- "INT" ;
--- O tipo de dado "INT" é usado para armazenar números inteiros (sem casas decimais).
-
--- "VARCHAR";
--- O tipo de dado "VARCHAR" é usado para armazenar cadeias de caracteres(texto) de comprimento variável, até 100 caracteres no exemplo acima.
-
--- "DECIMAL";
--- O tipo de dado "DECIMAL" é usado para armazenar números decimais com precisão definida, onde (10, 2) indica que o número pode ter até 10 dígitos no total, com 2 dígitos após a vírgula decimal.
-
--- ENUM;
--- O tipo de dado "ENUM" é usado para definir uma coluna que pode armazenar um conjunto específico de valores pré-definidos.
--- Exemplo de uso do "ENUM":
-CREATE TABLE pedidos (
-    id INT PRIMARY KEY,
-    status ENUM('Pendente', 'Processando', 'Enviado', 'Entregue', 'Cancelado')
-); -- Neste exemplo, a coluna "status" só pode conter um dos valores especificados no conjunto ENUM.
-
--- TEXT;
--- O tipo de dado "TEXT" é usado para armazenar grandes quantidades de texto, como descrições ou comentários.
-
--- DATE;
--- O tipo de dado "DATE" é usado para armazenar valores de data (ano, mês, dia).
--- Exemplo de uso do "DATE":
-CREATE TABLE eventos (
-    id INT PRIMARY KEY,
-    nome VARCHAR(100),
-    data_evento DATE
-); -- Neste exemplo, a coluna "data_evento" armazena a data do evento.
-
--- TIMESTAMP;
--- O tipo de dado "TIMESTAMP" é usado para armazenar valores de data e hora, incluindo informações de fuso horário.
--- Exemplo de uso do "TIMESTAMP":
-CREATE TABLE logs (
-    id INT PRIMARY KEY,
-    mensagem TEXT,
-    data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-); -- Neste exemplo, a coluna "data_hora" armazena a data e hora do log, com o valor padrão sendo a data e hora atual.
-
--- CHAR;
--- O tipo de dado "CHAR" é usado para armazenar cadeias de caracteres(texto) de comprimento fixo.
--- Exemplo de uso do "CHAR":
-CREATE TABLE produtos (
-    id INT PRIMARY KEY,
-    codigo CHAR(10),
-    nome VARCHAR(100)
-); -- Neste exemplo, a coluna "codigo" armazena um código de produto com exatamente 10 caracteres.
--
-- FLOAT;
--- O tipo de dado "FLOAT" é usado para armazenar números de ponto flutuante, que são números com casas decimais.
--- Exemplo de uso do "FLOAT":
-CREATE TABLE medidas (
-    id INT PRIMARY KEY,
-    valor FLOAT
-); -- Neste exemplo, a coluna "valor" armazena um número de ponto flutuante.
-
--- BOOLEAN;
--- O tipo de dado "BOOLEAN" é usado para armazenar valores booleanos, que podem ser verdadeiros (TRUE) ou falsos (FALSE).
--- Exemplo de uso do "BOOLEAN":
-CREATE TABLE usuarios (
-    id INT PRIMARY KEY,
-    nome VARCHAR(100),
-    ativo BOOLEAN
-); -- Neste exemplo, a coluna "ativo" indica se o usuário está ativo (TRUE) ou inativo (FALSE).
-
--- BLOB;
--- O tipo de dado "BLOB" (Binary Large Object) é usado para armazenar grandes quantidades de dados binários, como imagens, vídeos ou arquivos.
--- Exemplo de uso do "BLOB":
-CREATE TABLE imagens (
-    id INT PRIMARY KEY,
-    nome VARCHAR(100),
-    dados_imagem BLOB
-); -- Neste exemplo, a coluna "dados_imagem" armazena os dados binários da imagem.
-
--- BIT;
--- O tipo de dado "BIT" é usado para armazenar valores binários, como 0 ou 1.
--- Exemplo de uso do "BIT":
-CREATE TABLE flags (
-    id INT PRIMARY KEY,
-    flag BIT
-); -- Neste exemplo, a coluna "flag" armazena um valor binário (0 ou 1).
-
-
 -- Para selecionar o banco de dados que iremos trabalhar, usamos o comando:
 USE nome_do_banco_de_dados; -- Substitua "nome_do_banco_de_dados" pelo nome real do banco de dados que você deseja usar.
 -- ou clicamos duas vezes no nome do banco de dados na função "Navigator" -> Schemas.
 
-------------------------------------------------------------------------------------------
-
----  "SELECT";
---  A função "SELECT" é usada para selecionar dados de um banco de dados(tabelas).
-
-SELECT * FROM nome_da_tabela;
--- O comando acima seleciona todas as colunas e todas as linhas da tabela especificada, através do uso do asterisco (*).
-
-SELECT coluna1, coluna2 FROM nome_da_tabela;
--- O comando acima seleciona apenas as colunas especificadas (coluna1 e coluna2) da tabela.
-
-------------------------------------------------------------------------------------------
-
---- "WHERE";
--- A cláusula "WHERE" é usada para filtrar registros e obter apenas aqueles que atendem a uma condição específica.
--- Exemplo de uso do "WHERE":
-SELECT * FROM funcionarios WHERE salario > 5000; -- Seleciona todos os funcionários com salário maior que 5000 na tabela "funcionarios".
-SELECT id FROM funcionarios WHERE departamento = 'Vendas'; -- Seleciona os IDs dos funcionários que trabalham no departamento de Vendas na tabela "funcionarios".
-SELECT nome, salario FROM funcionarios WHERE nome != 'João'; -- Seleciona os nomes e salários dos funcionários cujo nome não é 'João' na tabela "funcionarios".
-
 -------------------------------------------------------------------------------------------
-
---- "DISTINCT";
--- A palavra-chave "DISTINCT" é usada para retornar apenas valores distintos(diferentes) em uma consulta, ou seja, não repete valores duplicados, só retorna um valor único para cada valor distinto encontrado na coluna especificada.
--- Exemplo de uso do "DISTINCT":
-SELECT DISTINCT departamento FROM funcionarios; -- Seleciona todos os departamentos distintos na tabela "funcionarios".
-SELECT DISTINCT nome FROM funcionarios WHERE salario > 4000; -- Seleciona os nomes distintos dos funcionários com salário maior que 4000 na tabela "funcionarios".
-SELECT DISTINCT departamento FROM funcionarios WHERE salario > 4000; -- Seleciona os departamentos distintos dos funcionários com salário maior que 4000 na tabela "funcionarios".
-SELECT DISTINCT nome FROM funcionarios WHERE departamento = 'Vendas'; -- Seleciona os nomes distintos dos funcionários que trabalham no departamento de Vendas na tabela "funcionarios".
-
-------------------------------------------------------------------------------------------
-
---- ALTER TABLE e DROP;
--- O comando "ALTER TABLE" é usado para modificar a estrutura de uma tabela existente em um banco de dados.
--- Palavras-chave da função ALTER TABLE;
--- "ADD" para adicionar novas colunas, 
--- "DROP" para remover colunas, tabelas, sgbd, usuários, e outros existentes,
--- "MODIFY" para alterar o tipo de dados ou outras propriedades de uma coluna existente,
--- "ADD" para adicionar novas colunas.
-
--- Exemplo de uso do "ALTER TABLE" com "ADD":
-ALTER TABLE funcionarios ADD data_admissao DATE; -- Adiciona uma nova coluna chamada "data_admissao" do tipo DATE na tabela "funcionarios".
-ALTER TABLE funcionarios DROP COLUMN data_admissao; -- Remove a coluna "data_admissao" da tabela "funcionarios".
-ALTER TABLE funcionarios MODIFY salario DECIMAL(12, 2); -- Altera o tipo de dados da coluna "salario" para DECIMAL com precisão de 12 dígitos no total e 2 dígitos após a vírgula decimal.
-DROP TABLE funcionarios; -- Remove a tabela "funcionarios" do banco de dados.
-DROP DATABASE nome_do_banco_de_dados; -- Remove o banco de dados especificado.
-DROP SCHEMA Turno_da_manhã; -- Remove o esquema "Turno_da_manhã" do banco de dados.
-
-------------------------------------------------------------------------------------------
-
---- INSERT INTO;
--- O comando "INSERT INTO" é usado para inserir novos registros em uma tabela de banco de dados.
-
--- Exemplo de uso do "INSERT INTO":
-INSERT INTO funcionarios (id, 
-nome, 
-departamento, 
-salario) 
-VALUES 
-('1', 'João Silva', 'Vendas', 4500.00); -- Os nomes estão entre aspas simples (' ') e os valores numéricos sem aspas. (id vale como texto)
--- Insere um novo registro na tabela "funcionarios" com os valores especificados para cada coluna.
-
-INSERT INTO funcionarios (id, nome, departamento, salario) 
-VALUES 
-('2', 'Maria Souza', 'Marketing', 5200.00),
-('3', 'Carlos Oliveira', 'Recursos Humanos', 4800.00),
-('4', 'Ana Costa', 'TI', 6000.00); -- Inserindo múltiplos registros na tabela "funcionarios" em uma única instrução.
-
-------------------------------------------------------------------------------------------
--- Imagine que você foi contratado como uma pessoa analista de dados pela Disney. 
--- Eles têm um enorme banco de dados de filmes, personagens e atores. 
--- Você recebeu a tarefa de extrair informações específicas do banco de dados utilizando a linguagem SQL, mais precisamente usando os comandos SELECT com os filtros WHERE e DISTINCT.
--- Você precisa descobrir quais atores fizeram a voz para um personagem específico em diferentes filmes Disney. 
--- Você sabe que o mesmo personagem foi dublado por atores diferentes em filmes diferentes, então o comando DISTINCT deveria ser usado em algum lugar do seu comando SQL. 
--- Como você usaria SELECT, WHERE e DISTINCT corretamente para descobrir a resposta para essa questão?
-SELECT DISTINCT Actor 
-FROM DisneyDB 
-WHERE Character = 'Mickey Mouse';
--- Este comando irá selecionar atores únicos que dublaram o personagem Mickey Mouse da tabela do banco de dados da Disney.
-
---- Agora, você foi solicitado a extrair uma lista de clientes que se cadastraram antes do ano de 2020 em um banco de dados de clientes.
-SELECT DISTINCT nome_do_cliente, data_de_cadastro
-FROM tabelaclientesdesafioaula1 
-WHERE data_de_cadastro < '2020-01-01';
-
-------------------------------------------------------------------------------------------
 
 ---- Tipos de dados mais comuns em um banco de dados:
 --- 1 - Texto (String):
@@ -223,6 +45,100 @@ WHERE data_de_cadastro < '2020-01-01';
 --- 5 - Binário:
 -- BLOB (Binary Large Object): Armazena dados binários, como imagens, vídeos ou arquivos.
 -- BIT: Armazena valores binários, como 0 ou 1.
+
+------------------------------------------------------------------------------------------
+
+--- CRATE TABLE;
+-- O comando CREATE TABLE é usado para criar uma nova tabela em um banco de dados
+-- Exemplo de uso do CREATE TABLE:
+CREATE TABLE funcionarios (
+    id INT PRIMARY KEY, 
+    nome VARCHAR(100),
+    departamento VARCHAR(50),
+    salario DECIMAL(10, 2)
+); -- (sempre usando vírgula para separar os campos e ponto e vírgula no final do comando).
+
+--- Tipos de dados mais comuns em SQL:
+-- INT;
+-- O tipo de dado INT é usado para armazenar números inteiros (sem casas decimais).
+
+-- VARCHAR;
+-- O tipo de dado VARCHAR é usado para armazenar cadeias de caracteres(texto) de comprimento variável, até 100 caracteres no exemplo acima na coluna "nome".
+
+-- DECIMAL;
+-- O tipo de dado DECIMAL é usado para armazenar números decimais com precisão definida, onde (10, 2) indica que o número pode ter até 10 dígitos no total, com 2 dígitos após a vírgula decimal.
+
+-- ENUM;
+-- O tipo de dado ENUM é usado para definir uma coluna que pode armazenar um conjunto específico de valores pré-definidos.
+-- Exemplo de uso do ENUM:
+CREATE TABLE pedidos (
+    id INT PRIMARY KEY,
+    status ENUM('Pendente', 'Processando', 'Enviado', 'Entregue', 'Cancelado')
+); -- Neste exemplo, a coluna "status" só pode conter um dos valores especificados no conjunto ENUM.
+
+-- TEXT;
+-- O tipo de dado TEXT é usado para armazenar grandes quantidades de texto, como descrições ou comentários.
+
+-- DATE;
+-- O tipo de dado DATE é usado para armazenar valores de data (ano, mês, dia).
+-- Exemplo de uso do DATE:
+CREATE TABLE eventos (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    data_evento DATE
+); -- Neste exemplo, a coluna "data_evento" armazena a data do evento.
+
+-- TIMESTAMP;
+-- O tipo de dado TIMESTAMP é usado para armazenar valores de data e hora, incluindo informações de fuso horário.
+-- Exemplo de uso do TIMESTAMP:
+CREATE TABLE logs (
+    id INT PRIMARY KEY,
+    mensagem TEXT,
+    data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+); -- Neste exemplo, a coluna "data_hora" armazena a data e hora do log, com o valor padrão sendo a data e hora atual.
+
+-- CHAR;
+-- O tipo de dado CHAR é usado para armazenar cadeias de caracteres(texto) de comprimento fixo.
+-- Exemplo de uso do CHAR:
+CREATE TABLE produtos (
+    id INT PRIMARY KEY,
+    codigo CHAR(10),
+    nome VARCHAR(100)
+); -- Neste exemplo, a coluna "codigo" armazena um código de produto com exatamente 10 caracteres.
+
+-- FLOAT;
+-- O tipo de dado FLOAT é usado para armazenar números de ponto flutuante, que são números com casas decimais.
+-- Exemplo de uso do FLOAT:
+CREATE TABLE medidas (
+    id INT PRIMARY KEY,
+    valor FLOAT
+); -- Neste exemplo, a coluna "valor" armazena um número de ponto flutuante.
+
+-- BOOLEAN;
+-- O tipo de dado BOOLEAN é usado para armazenar valores booleanos, que podem ser verdadeiros (TRUE) ou falsos (FALSE).
+-- Exemplo de uso do BOOLEAN:
+CREATE TABLE usuarios (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    ativo BOOLEAN
+); -- Neste exemplo, a coluna "ativo" indica se o usuário está ativo (TRUE) ou inativo (FALSE).
+
+-- BLOB;
+-- O tipo de dado BLOB (Binary Large Object) é usado para armazenar grandes quantidades de dados binários, como imagens, vídeos ou arquivos.
+-- Exemplo de uso do BLOB:
+CREATE TABLE imagens (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    dados_imagem BLOB
+); -- Neste exemplo, a coluna "dados_imagem" armazena os dados binários da imagem.
+
+-- BIT;
+-- O tipo de dado BIT é usado para armazenar valores binários, como 0 ou 1.
+-- Exemplo de uso do BIT:
+CREATE TABLE flags (
+    id INT PRIMARY KEY,
+    flag BIT
+); -- Neste exemplo, a coluna "flag" armazena um valor binário (0 ou 1).
 
 ------------------------------------------------------------------------------------------
 
@@ -272,31 +188,115 @@ CREATE TABLE pedidos (
 ); -- Neste exemplo, a coluna "id_cliente" na tabela "pedidos" é uma chave estrangeira que referencia a coluna "id_cliente" na tabela "clientes", estabelecendo um relacionamento entre as duas tabelas.
 
 --- As vezes, ao rodar um código com FOREIGN KEY, pode dar erro se a tabela que está sendo referenciada não existir ou se os tipos de dados não forem compatíveis;
--- Aparecerá a mensagem de erro: "Cannot add foreign key constraint".
---------------------------------------------------------------
------ Agora vamos criar uma tabela de pedidos ouro, em que iremos usar todos os comandos aprendidos:
---  A regra desta tabela, é preenche-la com os pedidos (tabela "pedidos") que deram mais de 400 reais no valor total.
-CREATE TABLE tabelapedidosgold ( -- criando a tabela "tabelapedidosgold"
-    ID_pedido_gold INT PRIMARY KEY, -- definindo a coluna "ID_pedido_gold" como chave primária
-    Data_Do_Pedido_gold DATE, -- coluna para armazenar a data do pedido
-    Status_gold VARCHAR(50), -- coluna para armazenar o status do pedido, com tamanho máximo de 50 caracteres
-    Total_Do_Pedido_gold DECIMAL(10,2), -- coluna para armazenar o valor total do pedido, com precisão de 10 dígitos e 2 casas decimais
-    Cliente_gold INT, -- coluna para armazenar o ID do cliente (tentei usar o foreign key para conectar com a tabela "clientes", mas deu erro)
-    Data_De_Envio_Estimada_gold DATE -- coluna para armazenar a data estimada de envio do pedido
-); -- raio
--- Agora, vamos inserir os dados na tabela "tabelapedidosgold" a partir da tabela "pedidos", filtrando apenas os pedidos com valor total maior ou igual a 400 reais.
-INSERT INTO tabelapedidosgold -- inserindo dados na tabela "tabelapedidosgold"
-    (ID_pedido_gold, 
-    Data_Do_Pedido_gold, 
-    Status_gold, 
-    Total_Do_Pedido_gold, 
-    Cliente_gold, 
-    Data_De_Envio_Estimada_gold)
-SELECT -- selecionando os dados
-    id_pedido, data_pedido, status_pedido, total_pedido, id_fornecedor, data_envio_estimada
-FROM pedidos -- da tabela "pedidos"
-WHERE total_pedido >= 400; -- onde o valor total do pedido é maior ou igual a 400 reais.
--- Pronto! Agora a tabela "tabelapedidosgold" está criada e preenchida com os pedidos que atendem ao critério especificado. 
+-- Aparecerá a mensagem de erro: "Cannot add foreign key constraint". 
+
+------------------------------------------------------------------------------------------
+
+--- ALTER TABLE;
+-- O comando ALTER TABLE é usado para modificar a estrutura de uma tabela existente em um banco de dados.
+
+--- Palavras-chave da função ALTER TABLE;
+
+-- ADD para adicionar novas colunas.
+-- Exemplo de uso do ADD:
+ALTER TABLE funcionarios ADD data_admissao DATE; 
+-- Adiciona uma nova coluna chamada "data_admissao" do tipo DATE na tabela "funcionarios".
+
+-- DROP para remover colunas, tabelas, sgbd, usuários, e outros existentes.
+-- Exemplo de uso do DROP:
+ALTER TABLE funcionarios DROP COLUMN data_admissao; 
+-- Remove a coluna "data_admissao" da tabela "funcionarios"
+
+-- Outro exemplo de uso do DROP:
+DROP TABLE funcionarios; 
+-- Remove a tabela "funcionarios" do banco de dados.
+
+-- Outro exemplo de uso do DROP:
+DROP DATABASE nome_do_banco_de_dados; 
+-- Remove o banco de dados especificado.
+
+-- Outro exemplo de uso do DROP:
+DROP SCHEMA Turno_da_manhã;
+-- Remove o esquema "Turno_da_manhã" do banco de dados.
+
+-- MODIFY para alterar o tipo de dados ou outras propriedades de uma coluna existente,
+-- Exemplo de uso do MODIFY:
+ALTER TABLE funcionarios MODIFY salario DECIMAL(12, 2); 
+-- Altera o tipo de dados da coluna "salario" para DECIMAL com precisão de 12 dígitos no total e 2 dígitos após a vírgula decimal.
+
+------------------------------------------------------------------------------------------
+
+--- INSERT INTO;
+-- O comando INSERT INTO é usado para inserir novos registros em uma tabela de banco de dados.
+
+-- Exemplo de uso do INSERT INTO:
+INSERT INTO funcionarios (id, 
+nome, 
+departamento, 
+salario) 
+VALUES 
+('1', 'João Silva', 'Vendas', 4500.00); -- Os nomes estão entre aspas simples (' ') e os valores numéricos sem aspas. (id vale como texto)
+-- Insere um novo registro na tabela "funcionarios" com os valores especificados para cada coluna.
+
+-- Continuando o comando acima:
+INSERT INTO funcionarios (id, nome, departamento, salario) 
+VALUES 
+('2', 'Maria Souza', 'Marketing', 5200.00),
+('3', 'Carlos Oliveira', 'Recursos Humanos', 4800.00),
+('4', 'Ana Costa', 'TI', 6000.00); 
+-- Inserindo múltiplos registros na tabela "funcionarios" em uma única instrução.
+
+------------------------------------------------------------------------------------------
+
+---  SELECT;
+--  A função SELECT é usada para selecionar dados de um banco de dados(tabelas).
+
+-- Exemplo de uso do SELECT:
+SELECT * FROM nome_da_tabela;
+-- O comando seleciona todas as colunas e todas as linhas da tabela especificada, através do uso do asterisco (*).
+
+-- Outro exemplo de uso do SELECT:
+SELECT coluna1, coluna2 FROM nome_da_tabela;
+-- O comando seleciona apenas as colunas especificadas (coluna1 e coluna2) da tabela.
+
+------------------------------------------------------------------------------------------
+
+--- WHERE;
+-- A cláusula WHERE é usada para filtrar registros e obter apenas aqueles que atendem a uma condição específica.
+
+-- Exemplo de uso do WHERE:
+SELECT * FROM funcionarios WHERE salario > 5000; 
+-- Seleciona todos os funcionários com salário maior que 5000 na tabela "funcionarios".
+
+-- Outro exemplo de uso do WHERE:
+SELECT id FROM funcionarios WHERE departamento = 'Vendas'; 
+-- Seleciona os IDs dos funcionários que trabalham no departamento de Vendas na tabela "funcionarios".
+
+-- Outro exemplo de uso do WHERE:
+SELECT nome, salario FROM funcionarios WHERE nome != 'João'; 
+-- Seleciona os nomes e salários dos funcionários cujo nome não é 'João' na tabela "funcionarios".
+
+-------------------------------------------------------------------------------------------
+
+--- DISTINCT;
+-- A palavra-chave DISTINCT é usada para retornar apenas valores distintos(diferentes) em uma consulta, ou seja, 
+-- não repete valores duplicados, só retorna um valor único para cada valor distinto encontrado na coluna especificada.
+
+-- Exemplo de uso do DISTINCT:
+SELECT DISTINCT departamento FROM funcionarios; 
+-- Seleciona todos os departamentos distintos na tabela "funcionarios".
+
+-- Outro exemplo de uso do DISTINCT:
+SELECT DISTINCT nome FROM funcionarios WHERE salario > 4000; 
+-- Seleciona os nomes distintos dos funcionários com salário maior que 4000 na tabela "funcionarios".
+
+-- Outro exemplo de uso do DISTINCT:
+SELECT DISTINCT departamento FROM funcionarios WHERE salario > 4000; 
+-- Seleciona os departamentos distintos dos funcionários com salário maior que 4000 na tabela "funcionarios".
+
+-- Outro exemplo de uso do DISTINCT:
+SELECT DISTINCT nome FROM funcionarios WHERE departamento = 'Vendas'; 
+-- Seleciona os nomes distintos dos funcionários que trabalham no departamento de Vendas na tabela "funcionarios".
 
 ------------------------------------------------------------------------------------------
 
@@ -307,38 +307,81 @@ WHERE total_pedido >= 400; -- onde o valor total do pedido é maior ou igual a 4
 -- Igual a: =
 -- Diferente de: != ou <>
 
--- Exemplo de uso dos operadores:
-SELECT * FROM funcionarios WHERE salario > 3000; -- Seleciona todos os funcionários com salário maior que 3000.
-SELECT * FROM funcionarios WHERE salario < 3000; -- Seleciona todos os funcionários com salário menor que 3000.
-SELECT * FROM funcionarios WHERE departamento = 'Vendas'; -- Seleciona todos os funcionários do departamento de Vendas.
-SELECT * FROM funcionarios WHERE departamento != 'Vendas'; -- Seleciona todos os funcionários que não estão no departamento de Vendas.
+-- Exemplo de uso dos operadores (>):
+SELECT * FROM funcionarios WHERE salario > 3000; 
+-- Seleciona todos os funcionários com salário maior que 3000.
+
+-- Outro exemplo de uso dos operadores (<):
+SELECT * FROM funcionarios WHERE salario < 3000; 
+-- Seleciona todos os funcionários com salário menor que 3000.
+
+-- Outro exemplo de uso dos operadores (=):
+SELECT * FROM funcionarios WHERE departamento = 'Vendas'; 
+-- Seleciona todos os funcionários do departamento de Vendas.
+
+-- Outro exemplo de uso dos operadores (!=):
+SELECT * FROM funcionarios WHERE departamento != 'Vendas'; 
+-- Seleciona todos os funcionários que não estão no departamento de Vendas.
 
 --- Podemos utilizar o maior e menor para diversas funções, não só números;
-SELECT * FROM tabelaclientes WHERE nome_cliente > 'C'; -- Seleciona todos os clientes cujo nome vem depois da letra 'C' no alfabeto.
+SELECT * FROM tabelaclientes WHERE nome_cliente > 'C'; 
+-- Seleciona todos os clientes cujo nome vem depois da letra 'C' no alfabeto.
+
+-- Outro exemplo de uso dos operadores com maior e menor em texto:
 SELECT * FROM tabelaclientes WHERE nome_cliente < 'M'; -- Seleciona todos os clientes cujo nome vem antes da letra 'M' no alfabeto.
 
 --- Para utilizar com datas:
-SELECT * FROM pedidos WHERE data_pedido > '2023-01-01'; -- Seleciona todos os pedidos feitos após 1º de janeiro de 2023.
-SELECT * FROM pedidos WHERE data_pedido < '2023-01-01'; -- Seleciona todos os pedidos feitos antes de 1º de janeiro de 2023.
-SELECT * FROM pedidos WHERE data_pedido = '2023-06-15'; -- Seleciona todos os pedidos feitos em 15 de junho de 2023.
-SELECT * FROM pedidos WHERE data_pedido != '2023-06-15'; -- Seleciona todos os pedidos que não foram feitos em 15 de junho de 2023.
+SELECT * FROM pedidos WHERE data_pedido > '2023-01-01'; 
+-- Seleciona todos os pedidos feitos após 1º de janeiro de 2023.
+
+-- Outro exemplo de uso dos operadores com datas: 
+SELECT * FROM pedidos WHERE data_pedido < '2023-01-01'; 
+-- Seleciona todos os pedidos feitos antes de 1º de janeiro de 2023.
+
+-- Outro exemplo de uso ods operadores com datas:
+SELECT * FROM pedidos WHERE data_pedido = '2023-06-15'; 
+-- Seleciona todos os pedidos feitos em 15 de junho de 2023.
+
+-- Outro exemplo de uso dos operadores com datas:
+SELECT * FROM pedidos WHERE data_pedido != '2023-06-15'; 
+-- Seleciona todos os pedidos que não foram feitos em 15 de junho de 2023.
 
 ------------------------------------------------------------------------------------------
 
 --- AND, OR, NOT;
 -- Esses são operadores lógicos usados para combinar múltiplas condições em uma cláusula WHERE.
+
 -- AND: Retorna verdadeiro se ambas as condições forem verdadeiras.
 -- OR: Retorna verdadeiro se pelo menos uma das condições for verdadeira.
 -- NOT: Inverte o valor lógico de uma condição.
 
--- Exemplo de uso dos operadores lógicos:
-SELECT * FROM funcionarios WHERE salario > 3000 AND departamento = 'Vendas'; -- Seleciona todos os funcionários com salário maior que 3000 e que estão no departamento de Vendas.
-SELECT * FROM funcionarios WHERE salario > 3000 OR departamento = 'Vendas'; -- Seleciona todos os funcionários com salário maior que 3000 ou que estão no departamento de Vendas.
-SELECT * FROM funcionarios WHERE salario > 3000 AND (departamento = 'Vendas' OR departamento = 'Marketing'); -- Seleciona todos os funcionários com salário maior que 3000 e que estão no departamento de Vendas ou Marketing.
-SELECT * FROM funcionarios WHERE NOT departamento = 'Vendas'; -- Seleciona todos os funcionários que não estão no departamento de Vendas.
-SELECT * FROM funcionarios WHERE NOT (salario < 4000 OR departamento = 'Recursos Humanos'); -- Seleciona todos os funcionários que têm salário maior ou igual a 4000 e que não estão no departamento de Recursos Humanos.
-SELECT * FROM funcionarios WHERE NOT (salario > 5000 AND departamento = 'TI'); -- Seleciona todos os funcionários que não têm salário maior que 5000 ou que não estão no departamento de TI.
-SELECT * FROM funcionarios WHERE salario > 3000 AND NOT (departamento = 'Vendas'); -- Seleciona todos os funcionários com salário maior que 3000 e que não estão no departamento de Vendas.
+-- Exemplo de uso dos operadores lógicos (AND):
+SELECT * FROM funcionarios WHERE salario > 3000 AND departamento = 'Vendas'; 
+-- Seleciona todos os funcionários com salário maior que 3000 e que estão no departamento de Vendas.
+
+-- Outro exemplo de uso dos operadores lógicos (OR):
+SELECT * FROM funcionarios WHERE salario > 3000 OR departamento = 'Vendas'; 
+-- Seleciona todos os funcionários com salário maior que 3000 ou que estão no departamento de Vendas.
+
+-- Outro exemplo de uso dos operadores lógicos (AND e OR):
+SELECT * FROM funcionarios WHERE salario > 3000 AND (departamento = 'Vendas' OR departamento = 'Marketing'); 
+-- Seleciona todos os funcionários com salário maior que 3000 e que estão no departamento de Vendas ou Marketing.
+
+-- Outro exemplo de uso dos operadores lógicos(NOT):
+SELECT * FROM funcionarios WHERE NOT departamento = 'Vendas'; 
+-- Seleciona todos os funcionários que não estão no departamento de Vendas.
+
+-- Outro exemplo de uso dos operadores lógicos (NOT e OR):
+SELECT * FROM funcionarios WHERE NOT (salario < 4000 OR departamento = 'Recursos Humanos'); 
+-- Seleciona todos os funcionários que têm salário maior ou igual a 4000 e que não estão no departamento de Recursos Humanos.
+
+-- Outro exemplo de uso dos operadores lógicos (NOT e AND):
+SELECT * FROM funcionarios WHERE NOT (salario > 5000 AND departamento = 'TI'); 
+-- Seleciona todos os funcionários que não têm salário maior que 5000 ou que não estão no departamento de TI.
+
+-- Outro exemplo de uso dos operadores lógicos (AND e NOT):
+SELECT * FROM funcionarios WHERE salario > 3000 AND NOT (departamento = 'Vendas'); 
+-- Seleciona todos os funcionários com salário maior que 3000 e que não estão no departamento de Vendas.
 
 ------------------------------------------------------------------------------------------
 
@@ -346,14 +389,27 @@ SELECT * FROM funcionarios WHERE salario > 3000 AND NOT (departamento = 'Vendas'
 -- O operador IN é usado para filtrar valores que correspondem a qualquer um dos valores especificados em uma lista.
 
 -- Exemplo de uso do IN:
-SELECT * FROM funcionarios WHERE departamento IN ('Vendas', 'Marketing', 'TI'); -- Seleciona todos os funcionários que estão nos departamentos de Vendas, Marketing ou TI.
-SELECT * FROM pedidos WHERE status_pedido IN ('Pendente', 'Processando'); -- Seleciona todos os pedidos com status "Pendente" ou "Processando".
---  O operador IN equivale ao uso do "=", sua diferença na prática é que o "=" você precisaria usar várias vezes para cada valor que deseja comparar, enquanto o IN permite listar todos os valores em uma única condição.
+SELECT * FROM funcionarios WHERE departamento IN ('Vendas', 'Marketing', 'TI'); 
+-- Seleciona todos os funcionários que estão nos departamentos de Vendas, Marketing ou TI.
 
---  Também podemos usar o IN em funções "AND", "OR" e "NOT":
-SELECT * FROM funcionarios WHERE salario > 3000 AND departamento IN ('Vendas', 'Marketing'); -- Seleciona todos os funcionários com salário maior que 3000 e que estão nos departamentos de Vendas ou Marketing.
-SELECT * FROM funcionarios WHERE salario > 3000 OR departamento IN ('Recursos Humanos', 'TI'); -- Seleciona todos os funcionários com salário maior que 3000 ou que estão nos departamentos de Recursos Humanos ou TI.
-SELECT * FROM funcionarios WHERE NOT departamento IN ('Vendas', 'Marketing'); -- Seleciona todos os funcionários que não estão nos departamentos de Vendas ou Marketing.   
+-- Outro exemplo de uso do IN:
+SELECT * FROM pedidos WHERE status_pedido IN ('Pendente', 'Processando'); 
+-- Seleciona todos os pedidos com status "Pendente" ou "Processando".
+
+--  Também podemos usar o IN com operadores lógicos (AND, OR, NOT):
+SELECT * FROM funcionarios WHERE salario > 3000 AND departamento IN ('Vendas', 'Marketing'); 
+-- Seleciona todos os funcionários com salário maior que 3000 e que estão nos departamentos de Vendas ou Marketing.
+
+-- Outro exemplo de uso do IN com operadores lógicos:
+SELECT * FROM funcionarios WHERE salario > 3000 OR departamento IN ('Recursos Humanos', 'TI'); 
+-- Seleciona todos os funcionários com salário maior que 3000 ou que estão nos departamentos de Recursos Humanos ou TI.
+
+-- Outro exemplo de uso do IN com operadores lógicos:
+SELECT * FROM funcionarios WHERE NOT departamento IN ('Vendas', 'Marketing'); 
+-- Seleciona todos os funcionários que não estão nos departamentos de Vendas ou Marketing.   
+
+--  O operador IN equivale ao uso do "=", sua diferença na prática é que o "=" você precisaria usar várias vezes para cada valor que deseja comparar, 
+-- enquanto o IN permite listar todos os valores em uma única condição.
 
 ------------------------------------------------------------------------------------------
 
@@ -361,18 +417,44 @@ SELECT * FROM funcionarios WHERE NOT departamento IN ('Vendas', 'Marketing'); --
 -- O operador LIKE é usado para buscar um padrão específico em uma coluna de texto.
 
 -- Exemplo de uso do LIKE:
-SELECT * FROM funcionarios WHERE nome LIKE 'A%'; -- Seleciona todos os funcionários cujo nome começa com a letra 'A'. O símbolo de porcentagem (%) é um curinga que representa qualquer sequência de caracteres.
-SELECT * FROM funcionarios WHERE nome LIKE '%Silva'; -- Seleciona todos os funcionários cujo nome termina com 'Silva'.
-SELECT * FROM funcionarios WHERE nome LIKE '%an%'; -- Seleciona todos os funcionários cujo nome contém a sequência de caracteres 'an'.
-SELECT * FROM funcionarios WHERE nome LIKE '_a%'; -- Seleciona todos os funcionários cujo segundo caractere do nome é 'a'. O sublinhado (_) é um curinga que representa um único caractere.
-SELECT * FROM funcionarios WHERE nome LIKE 'J_n%'; -- Seleciona todos os funcionários cujo nome começa com 'J', tem 'n' como terceiro caractere e pode ter qualquer sequência de caracteres após isso.
-SELECT * FROM funcionarios WHERE nome LIKE '%Eduardo%'; -- Seleciona todos os funcionários cujo nome contém 'Eduardo' em qualquer posição.
-SELECT * FROM funcionarios WHERE nome LIKE '%o_o%'; -- Seleciona todos os funcionários cujo nome contém 'o' como segundo caractere e 'o' como quarto caractere, com qualquer sequência de caracteres antes, entre e depois.------------------------------------------------------------------------------------------
+SELECT * FROM funcionarios WHERE nome LIKE 'A%'; 
+-- Seleciona todos os funcionários cujo nome começa com a letra 'A'. O símbolo de porcentagem (%) é um curinga que representa qualquer sequência de caracteres.
 
--- Também podemos usar o LIKE em funções "AND", "OR", "NOT" e "IN":
-SELECT * FROM funcionarios WHERE nome LIKE 'A%' AND departamento = 'Vendas'; -- Seleciona todos os funcionários cujo nome começa com 'A' e que estão no departamento de Vendas.
-SELECT * FROM funcionarios WHERE nome LIKE '%Silva' OR departamento = 'Marketing'; -- Seleciona todos os funcionários cujo nome termina com 'Silva' ou que estão no departamento de Marketing.
-SELECT * FROM funcionarios WHERE NOT nome LIKE '%an%'; -- Seleciona todos os funcionários cujo nome não contém a sequência de caracteres 'an'.
+-- Outro exemplo de uso do LIKE;
+SELECT * FROM funcionarios WHERE nome LIKE '%Silva'; 
+-- Seleciona todos os funcionários cujo nome termina com 'Silva'.
+
+-- Outro exemplo de uso do LIKE;
+SELECT * FROM funcionarios WHERE nome LIKE '%an%'; 
+-- Seleciona todos os funcionários cujo nome contém a sequência de caracteres 'an'.
+
+-- Outro exemplo de uso do LIKE;
+SELECT * FROM funcionarios WHERE nome LIKE '_a%'; 
+-- Seleciona todos os funcionários cujo segundo caractere do nome é 'a'. O sublinhado (_) é um curinga que representa um único caractere.
+
+-- Outro exemplo de uso do LIKE;
+SELECT * FROM funcionarios WHERE nome LIKE 'J_n%'; 
+-- Seleciona todos os funcionários cujo nome começa com 'J', tem 'n' como terceiro caractere e pode ter qualquer sequência de caracteres após isso.
+
+-- Outro exemplo de uso do LIKE;
+SELECT * FROM funcionarios WHERE nome LIKE '%Eduardo%'; 
+-- Seleciona todos os funcionários cujo nome contém 'Eduardo' em qualquer posição.
+
+-- Outro exemplo de uso do LIKE;
+SELECT * FROM funcionarios WHERE nome LIKE '%o_o%'; 
+-- Seleciona todos os funcionários cujo nome contém 'o' como segundo caractere e 'o' como quarto caractere, com qualquer sequência de caracteres antes, entre e depois.------------------------------------------------------------------------------------------
+
+--- Também podemos usar o LIKE com operadores lógicos (AND, OR e NOT):
+SELECT * FROM funcionarios WHERE nome LIKE 'A%' AND departamento = 'Vendas'; 
+-- Seleciona todos os funcionários cujo nome começa com 'A' e que estão no departamento de Vendas.
+
+-- Outro exemplo de uso do LIKE com operadores lógicos:
+SELECT * FROM funcionarios WHERE nome LIKE '%Silva' OR departamento = 'Marketing'; 
+-- Seleciona todos os funcionários cujo nome termina com 'Silva' ou que estão no departamento de Marketing.
+
+-- Outro exemplo de uso do LIKE com operadores lógicos:
+SELECT * FROM funcionarios WHERE NOT nome LIKE '%an%'; 
+-- Seleciona todos os funcionários cujo nome não contém a sequência de caracteres 'an'.
 
 ------------------------------------------------------------------------------------------
 
@@ -380,13 +462,32 @@ SELECT * FROM funcionarios WHERE NOT nome LIKE '%an%'; -- Seleciona todos os fun
 -- O comando LIMIT é usado para restringir o número de registros retornados por uma consulta SQL.
 
 -- Exemplo de uso do LIMIT:
-SELECT * FROM funcionarios LIMIT 5; -- Retorna os primeiros 5 registros da tabela "funcionarios".
-SELECT * FROM pedidos LIMIT 10; -- Retorna os primeiros 10 registros da tabela "pedidos".
-SELECT * FROM funcionarios WHERE salario > 4000 LIMIT 3; -- Retorna os primeiros 3 registros da tabela "funcionarios" onde o salário é maior que 4000.
-SELECT * FROM pedidos WHERE status_pedido = 'Enviado' LIMIT 7; -- Retorna os primeiros 7 registros da tabela "pedidos" onde o status do pedido é 'Enviado'.
-SELECT * FROM funcionarios LIMIT 0, 5; -- Retorna os primeiros 5 registros da tabela "funcionarios", começando do índice 0 (primeiro registro).
-SELECT * FROM funcionarios LIMIT 5, 10; -- Retorna 10 registros da tabela "funcionarios", começando a partir do 6º registro (índice 5).
-SELECT * FROM funcionarios LIMIT 5 OFFSET 10; -- Retorna 5 registros da tabela "funcionarios", começando a partir do 11º registro (índice 10).
+SELECT * FROM funcionarios LIMIT 5; 
+-- Retorna os primeiros 5 registros da tabela "funcionarios".
+
+-- Outro exemplo de uso do LIMIT;
+SELECT * FROM pedidos LIMIT 10; 
+-- Retorna os primeiros 10 registros da tabela "pedidos".
+
+-- Outro exemplo de uso do LIMIT;
+SELECT * FROM funcionarios WHERE salario > 4000 LIMIT 3; 
+-- Retorna os primeiros 3 registros da tabela "funcionarios" onde o salário é maior que 4000.
+
+-- Outro exemplo de uso do LIMIT;
+SELECT * FROM pedidos WHERE status_pedido = 'Enviado' LIMIT 7; 
+-- Retorna os primeiros 7 registros da tabela "pedidos" onde o status do pedido é 'Enviado'.
+
+-- Outro exemplo de uso do LIMIT;
+SELECT * FROM funcionarios LIMIT 0, 5; 
+-- Retorna os primeiros 5 registros da tabela "funcionarios", começando do índice 0 (primeiro registro).
+
+-- Outro exemplo de uso do LIMIT;
+SELECT * FROM funcionarios LIMIT 5, 10; 
+-- Retorna 10 registros da tabela "funcionarios", começando a partir do 6º registro (índice 5).
+
+-- Outro exemplo de uso do LIMIT;
+SELECT * FROM funcionarios LIMIT 5 OFFSET 10; 
+-- Retorna 5 registros da tabela "funcionarios", começando a partir do 11º registro (índice 10).
 
 ------------------------------------------------------------------------------------------
 
@@ -394,8 +495,12 @@ SELECT * FROM funcionarios LIMIT 5 OFFSET 10; -- Retorna 5 registros da tabela "
 -- O operador BETWEEN é usado para filtrar valores dentro de um intervalo específico (entre)
 
 -- Exemplo de uso do BETWEEN:
-SELECT * FROM funcionarios WHERE salario BETWEEN 2000 AND 5000; -- Seleciona todos os funcionários com salário entre 2000 e 5000.
-SELECT * FROM pedidos WHERE data_pedido BETWEEN '2023-01-01' AND '2023-06-30'; -- Seleciona todos os pedidos feitos entre 1º de janeiro de 2023 e 30 de junho de 2023.
+SELECT * FROM funcionarios WHERE salario BETWEEN 2000 AND 5000; 
+-- Seleciona todos os funcionários com salário entre 2000 e 5000.
+
+-- Outro exemplo de uso do BETWEEN:
+SELECT * FROM pedidos WHERE data_pedido BETWEEN '2023-01-01' AND '2023-06-30'; 
+-- Seleciona todos os pedidos feitos entre 1º de janeiro de 2023 e 30 de junho de 2023.
 
 ------------------------------------------------------------------------------------------
 
@@ -403,18 +508,36 @@ SELECT * FROM pedidos WHERE data_pedido BETWEEN '2023-01-01' AND '2023-06-30'; -
 -- O comando ORDER BY é usado para ordenar os resultados de uma consulta SQL com base em uma ou mais colunas.
 
 -- Exemplo de uso do ORDER BY:
-SELECT * FROM funcionarios ORDER BY salario ASC; -- Ordena os funcionários pelo salário em ordem crescente (do menor para o maior).
-SELECT * FROM funcionarios ORDER BY salario DESC; -- Ordena os funcionários pelo salário em ordem decrescente (do maior para o menor).
-SELECT * FROM funcionarios ORDER BY departamento, salario ASC; -- Ordena os funcionários primeiro pelo departamento em ordem crescente e depois pelo salário em ordem crescente dentro de cada departamento.
-SELECT * FROM funcionarios ORDER BY departamento ASC, salario DESC; -- Ordena os funcionários primeiro pelo departamento em ordem crescente e depois pelo salário em ordem decrescente dentro de cada departamento.
+SELECT * FROM funcionarios ORDER BY salario ASC; 
+-- Ordena os funcionários pelo salário em ordem crescente (do menor para o maior).
+
+-- Outro exemplo de uso do ORDER BY:
+SELECT * FROM funcionarios ORDER BY salario DESC; 
+-- Ordena os funcionários pelo salário em ordem decrescente (do maior para o menor).
+
+-- Outro exemplo de uso do ORDER BY:
+SELECT * FROM funcionarios ORDER BY departamento, salario ASC;
+-- Ordena os funcionários primeiro pelo departamento em ordem crescente e depois pelo salário em ordem crescente dentro de cada departamento.
+
+-- Outro exemplo de uso do ORDER BY:
+SELECT * FROM funcionarios ORDER BY departamento ASC, salario DESC; 
+-- Ordena os funcionários primeiro pelo departamento em ordem crescente e depois pelo salário em ordem decrescente dentro de cada departamento.
 
 --- Podemos usar o ORDER BY com textos também:
-SELECT * FROM funcionarios ORDER BY nome ASC; --(pode utilizar sem o ASC) -- Ordena os funcionários pelo nome em ordem alfabética crescente.
-SELECT * FROM funcionarios ORDER BY nome DESC; -- Ordena os funcionários pelo nome em ordem alfabética decrescente.
+SELECT * FROM funcionarios ORDER BY nome ASC; -- (pode utilizar sem o ASC) 
+-- Ordena os funcionários pelo nome em ordem alfabética crescente.
+
+-- Outro exemplo de uso do ORDER BY com textos:
+SELECT * FROM funcionarios ORDER BY nome DESC; 
+-- Ordena os funcionários pelo nome em ordem alfabética decrescente.
 
 --- Para utilizar com datas:
-SELECT * FROM pedidos ORDER BY data_pedido ASC; -- Ordena os pedidos pela data em ordem crescente (do mais antigo para o mais recente).
-SELECT * FROM pedidos ORDER BY data_pedido DESC; -- Ordena os pedidos pela data em ordem decrescente (do mais recente para o mais antigo).
+SELECT * FROM pedidos ORDER BY data_pedido ASC; 
+-- Ordena os pedidos pela data em ordem crescente (do mais antigo para o mais recente).
+
+-- Outro exemplo de uso do ORDER BY com data:
+SELECT * FROM pedidos ORDER BY data_pedido DESC; 
+-- Ordena os pedidos pela data em ordem decrescente (do mais recente para o mais antigo).
 
 ------------------------------------------------------------------------------------------
 
@@ -424,10 +547,13 @@ SELECT * FROM pedidos ORDER BY data_pedido DESC; -- Ordena os pedidos pela data 
 
 -- Exemplo de uso do ALIAS:
 SELECT nome AS nome_funcionario, salario AS salario_funcionario -- Nome original AS apelido temporário
-FROM funcionarios; -- Neste exemplo, "nome_funcionario" e "salario_funcionario" são aliases para as colunas "nome" e "salario" da tabela "funcionarios".
+FROM funcionarios; 
+-- Neste exemplo, "nome_funcionario" e "salario_funcionario" são aliases para as colunas "nome" e "salario" da tabela "funcionarios".
 
+-- Outro exemplo de uso do ALIAS;
 SELECT produto_id AS id_produto, nome AS nome_produto, preco AS preco_produto -- Nome original AS apelido temporário
-FROM produtos; -- Neste exemplo, "id_produto", "nome_produto" e "preco_produto" são aliases para as colunas "produto_id", "nome" e "preco" da tabela "produtos". 
+FROM produtos; 
+-- Neste exemplo, "id_produto", "nome_produto" e "preco_produto" são aliases para as colunas "produto_id", "nome" e "preco" da tabela "produtos". 
 
 --- Podemos usar alias também para fazer cálculos:
 CREATE TABLE jogadores (
@@ -455,23 +581,32 @@ CREATE TABLE jogadores (
 -- Exemplo de uso do GROUP BY:
 SELECT departamento, COUNT(*) AS total_funcionarios
 FROM funcionarios
-GROUP BY departamento; -- Agrupa os funcionários por departamento e retorna o número total de funcionários em cada departamento.
+GROUP BY departamento; 
+-- Agrupa os funcionários por departamento e retorna o número total de funcionários em cada departamento.
 
+-- Outro exemplo de uso do GROUP BY:
 SELECT departamento, AVG(salario) AS media_salarios
 FROM funcionarios
-GROUP BY departamento; -- Agrupa os funcionários por departamento e retorna a média dos salários em cada departamento.
+GROUP BY departamento; 
+-- Agrupa os funcionários por departamento e retorna a média dos salários em cada departamento.
 
+-- Outro exemplo de uso do GROUP BY:
 SELECT departamento, SUM(salario) AS total_salarios
 FROM funcionarios
-GROUP BY departamento; -- Agrupa os funcionários por departamento e retorna a soma total dos salários em cada departamento.
+GROUP BY departamento; 
+-- Agrupa os funcionários por departamento e retorna a soma total dos salários em cada departamento.
 
+-- Outro exemplo de uso do GROUP BY:
 SELECT departamento, MAX(salario) AS maior_salario
 FROM funcionarios
-GROUP BY departamento; -- Agrupa os funcionários por departamento e retorna o maior salário em cada departamento.
+GROUP BY departamento; 
+-- Agrupa os funcionários por departamento e retorna o maior salário em cada departamento.
 
+-- Outro exemplo de uso do GROUP BY:
 SELECT departamento, MIN(salario) AS menor_salario
 FROM funcionarios
-GROUP BY departamento; -- Agrupa os funcionários por departamento e retorna o menor salário em cada departamento.
+GROUP BY departamento; 
+-- Agrupa os funcionários por departamento e retorna o menor salário em cada departamento.
 
 ------------------------------------------------------------------------------------------
 
@@ -483,43 +618,57 @@ GROUP BY departamento; -- Agrupa os funcionários por departamento e retorna o m
 SELECT departamento, COUNT(*) AS total_funcionarios -- Retorna o número total de funcionários em cada departamento.
 FROM funcionarios
 GROUP BY departamento
-HAVING COUNT(*) > 5; -- Retorna os departamentos que têm mais de 5 funcionários.
+HAVING COUNT(*) > 5; 
+-- Retorna os departamentos que têm mais de 5 funcionários.
 
+-- Outro exemplo de uso do HAVING:
 SELECT departamento, AVG(salario) AS media_salarios -- Retorna a média dos salários em cada departamento.
 FROM funcionarios
 GROUP BY departamento
-HAVING AVG(salario) > 4000; -- Retorna os departamentos onde a média dos salários é maior que 4000.
+HAVING AVG(salario) > 4000; 
+-- Retorna os departamentos onde a média dos salários é maior que 4000.
 
+-- Outro exemplo de uso do HAVING:
 SELECT departamento, SUM(salario) AS total_salarios -- Retorna a soma total dos salários em cada departamento.
 FROM funcionarios
 GROUP BY departamento
-HAVING SUM(salario) > 20000; -- Retorna os departamentos onde a soma total dos salários é maior que 20000.
+HAVING SUM(salario) > 20000; 
+-- Retorna os departamentos onde a soma total dos salários é maior que 20000.
 
+-- Outro exemplo de uso HAVING:
 SELECT departamento, MAX(salario) AS maior_salario -- Retorna o maior salário em cada departamento.
 FROM funcionarios
 GROUP BY departamento
-HAVING MAX(salario) > 5000; -- Retorna os departamentos onde o maior salário é maior que 5000.
+HAVING MAX(salario) > 5000; 
+-- Retorna os departamentos onde o maior salário é maior que 5000.
 
+-- Outro exemplo de uso HAVING:
 SELECT departamento, MIN(salario) AS menor_salario -- Retorna o menor salário em cada departamento.
 FROM funcionarios
 GROUP BY departamento
-HAVING MIN(salario) < 3000; -- Retorna os departamentos onde o menor salário é menor que 3000.
+HAVING MIN(salario) < 3000; 
+-- Retorna os departamentos onde o menor salário é menor que 3000.
 
 --- Utilizando o HAVING com funções de agregação e operadores lógicos:
 SELECT departamento, COUNT(*) AS total_funcionarios -- Retorna o número total de funcionários em cada departamento.
 FROM funcionarios
 GROUP BY departamento
-HAVING COUNT(*) > 5 AND AVG(salario) > 4000; -- Retorna os departamentos que têm mais de 5 funcionários e onde a média dos salários é maior que 4000.
+HAVING COUNT(*) > 5 AND AVG(salario) > 4000; 
+-- Retorna os departamentos que têm mais de 5 funcionários e onde a média dos salários é maior que 4000.
 
+-- Outro exemplo de uso do HAVING com funções de agregação e operadores lógicos:
 SELECT departamento, SUM(salario) AS total_salarios -- Retorna a soma total dos salários em cada departamento.
 FROM funcionarios
 GROUP BY departamento
-HAVING SUM(salario) > 20000 OR MAX(salario) > 5000; -- Retorna os departamentos onde a soma total dos salários é maior que 20000 ou onde o maior salário é maior que 5000.
+HAVING SUM(salario) > 20000 OR MAX(salario) > 5000; 
+-- Retorna os departamentos onde a soma total dos salários é maior que 20000 ou onde o maior salário é maior que 5000.
 
+-- Outro exemplo de uso do HAVING com funções de agregação e operadores lógicos:
 SELECT departamento, MIN(salario) AS menor_salario -- Retorna o menor salário em cada departamento.
 FROM funcionarios
 GROUP BY departamento
-HAVING MIN(salario) < 3000 AND NOT MAX(salario) > 5000; -- Retorna os departamentos onde o menor salário é menor que 3000 e onde o maior salário não é maior que 5000.
+HAVING MIN(salario) < 3000 AND NOT MAX(salario) > 5000; 
+-- Retorna os departamentos onde o menor salário é menor que 3000 e onde o maior salário não é maior que 5000.
 
 ------------------------------------------------------------------------------------------
 
@@ -534,7 +683,8 @@ CASE -- Chamada da função, tipo "While" no Phyton
     WHEN salario BETWEEN 3000 AND 5000 THEN 'Médio' -- Se a condição for verdadeira, retorna 'Médio'
     ELSE 'Baixo' -- Se nenhuma das condições anteriores for verdadeira, retorna 'Baixo'
 END AS nivel_salario
-FROM funcionarios; -- Neste exemplo, a consulta retorna o nome, salário e um novo campo "nivel_salario" que classifica o salário como 'Alto', 'Médio' ou 'Baixo' com base nos valores do salário.
+FROM funcionarios; 
+-- Neste exemplo, a consulta retorna o nome, salário e um novo campo "nivel_salario" que classifica o salário como 'Alto', 'Médio' ou 'Baixo' com base nos valores do salário.
 
 SELECT nome, departamento,
 CASE departamento
@@ -543,7 +693,8 @@ CASE departamento
     WHEN 'TI' THEN 'Departamento de Tecnologia da Informação'
     ELSE 'Outro Departamento'
 END AS nome_departamento
-FROM funcionarios; -- Neste exemplo, a consulta retorna o nome, departamento e um novo campo "nome_departamento" que fornece uma descrição mais detalhada do departamento com base no valor da coluna "departamento".
+FROM funcionarios; 
+-- Neste exemplo, a consulta retorna o nome, departamento e um novo campo "nome_departamento" que fornece uma descrição mais detalhada do departamento com base no valor da coluna "departamento".
 
 --- Usando CASE com todas as funções aprendidas (banco de dados "suco_vendas"):
 SELECT EMBALAGEM,
@@ -581,7 +732,8 @@ SELECT A.MATRICULA, A.NOME, COUNT(B.NUMERO_DA_NOTA_FISCAL) AS TOTAL_VENDAS FROM 
 tabela_de_vendedores A -- Tabela "A" é a tabela de vendedores.
 INNER JOIN notas_fiscais B -- Tabela "B" é a tabela de notas fiscais
 ON A.MATRICULA = B.MATRICULA_VENDEDOR -- Condição de correspondência entre as tabelas, onde a matrícula do vendedor na tabela "A" deve corresponder à matrícula do vendedor na tabela "B".
-GROUP BY A.MATRICULA, A.NOME; -- Agrupa os resultados por matrícula e nome do vendedor para calcular o total de vendas para cada vendedor.
+GROUP BY A.MATRICULA, A.NOME; 
+-- Agrupa os resultados por matrícula e nome do vendedor para calcular o total de vendas para cada vendedor.
 
 --------------------------------------------------------------
 
@@ -591,7 +743,8 @@ GROUP BY A.MATRICULA, A.NOME; -- Agrupa os resultados por matrícula e nome do v
 SELECT A.NOME, B.HOBBY FROM 
 TABELA_ESQUERDA AS A -- Resolvi utilizar o "AS" para deixar mais claro, mas ele é opcional.
 LEFT JOIN TABELA_DIREITA AS B -- Resolvi utilizar o "AS" para deixar mais claro, mas ele é opcional.
-ON A.IDENTIFICADOR = B.IDENTIFICADOR; -- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros da tabela "A" e os hobbies correspondentes da tabela "B". 
+ON A.IDENTIFICADOR = B.IDENTIFICADOR; 
+-- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros da tabela "A" e os hobbies correspondentes da tabela "B". 
 -- Se um registro da tabela "A" não tiver um hobby correspondente na tabela "B", o campo do hobby será preenchido com NULL.
 
 --------------------------------------------------------------
@@ -602,7 +755,8 @@ ON A.IDENTIFICADOR = B.IDENTIFICADOR; -- Retorna o nome da tabela "A" e o hobby 
 SELECT A.NOME, B.HOBBY FROM 
 TABELA_ESQUERDA AS A
 RIGHT JOIN TABELA_DIREITA AS B
-ON A.IDENTIFICADOR = B.IDENTIFICADOR; -- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros da tabela "B" e os nomes correspondentes da tabela "A".
+ON A.IDENTIFICADOR = B.IDENTIFICADOR; 
+-- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros da tabela "B" e os nomes correspondentes da tabela "A".
 -- Se um registro da tabela "B" não tiver um nome correspondente na tabela "A", o campo do nome será preenchido com NULL.
 
 --------------------------------------------------------------
@@ -611,7 +765,8 @@ ON A.IDENTIFICADOR = B.IDENTIFICADOR; -- Retorna o nome da tabela "A" e o hobby 
 
 -- Exemplo de uso do CROSS JOIN:
 SELECT A.NOME, B.HOBBY FROM
-TABELA_ESQUERDA A, TABELA_DIREITA B; -- Retorna o nome da tabela "A" e o hobby da tabela "B", combinando cada registro da tabela "A" com cada registro da tabela "B".
+TABELA_ESQUERDA A, TABELA_DIREITA B; 
+-- Retorna o nome da tabela "A" e o hobby da tabela "B", combinando cada registro da tabela "A" com cada registro da tabela "B".
 -- O CROSS JOIN pode resultar em um número muito grande de registros, dependendo do número de registros em cada tabela, pois combina cada registro de uma tabela com todos os registros da outra tabela.
 -- Fique atento com a chamada da função CROSS JOIN, ela pode ser feita de duas formas: usando a palavra-chave CROSS JOIN ou simplesmente listando as tabelas separadas por vírgula, como no exemplo acima. Ambas as formas produzem o mesmo resultado, que é o produto cartesiano das duas tabelas.
 
@@ -623,7 +778,8 @@ TABELA_ESQUERDA A, TABELA_DIREITA B; -- Retorna o nome da tabela "A" e o hobby d
 SELECT A.NOME, B.HOBBY FROM 
 TABELA_ESQUERDA A
 FULL JOIN TABELA_DIREITA B
-ON A.IDENTIFICADOR = B.IDENTIFICADOR; -- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros de ambas as tabelas.
+ON A.IDENTIFICADOR = B.IDENTIFICADOR; 
+-- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros de ambas as tabelas.
 -- Se um registro da tabela "A" não tiver um hobby correspondente na tabela "B", o campo do hobby será preenchido com NULL. Se um registro da tabela "B" não tiver um nome correspondente na tabela "A", o campo do nome será preenchido com NULL.
 
 --- Detalhe crucial do FULL JOIN:
@@ -634,7 +790,8 @@ LEFT JOIN TABELA_DIREITA B ON A.IDENTIFICADOR = B.IDENTIFICADOR
 UNION
 SELECT A.NOME, B.HOBBY FROM
 TABELA_ESQUERDA A
-RIGHT JOIN TABELA_DIREITA B ON A.IDENTIFICADOR = B.IDENTIFICADOR; -- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros de ambas as tabelas.
+RIGHT JOIN TABELA_DIREITA B ON A.IDENTIFICADOR = B.IDENTIFICADOR; 
+-- Retorna o nome da tabela "A" e o hobby da tabela "B", incluindo todos os registros de ambas as tabelas.
 
 ------------------------------------------------------------------------------------------
 
@@ -660,20 +817,24 @@ SELECT nome FROM funcionarios WHERE departamento = 'Marketing'; -- Seleciona os 
 
 -- Exemplo de uso da SUBQUERY:
 SELECT nome, salario FROM funcionarios
-WHERE salario > (SELECT AVG(salario) FROM funcionarios); -- Retorna os nomes e salários dos funcionários cujo salário é maior que a média salarial de todos os funcionários. A subquery (SELECT AVG(salario) FROM funcionarios) calcula a média salarial, e a consulta externa seleciona os funcionários com salário superior a essa média.
+WHERE salario > (SELECT AVG(salario) FROM funcionarios); 
+-- Retorna os nomes e salários dos funcionários cujo salário é maior que a média salarial de todos os funcionários. A subquery (SELECT AVG(salario) FROM funcionarios) calcula a média salarial, e a consulta externa seleciona os funcionários com salário superior a essa média.
 
--- Outro exemplo:
+-- Outro exemplo de uso da SUBQUERY:
 SELECT nome FROM funcionarios
-WHERE departamento = (SELECT departamento FROM funcionarios WHERE nome = 'João'); -- Retorna os nomes dos funcionários que estão no mesmo departamento que o funcionário chamado 'João'. A subquery (SELECT departamento FROM funcionarios WHERE nome = 'João') retorna o departamento de João, e a consulta externa seleciona os funcionários que pertencem a esse departamento.
+WHERE departamento = (SELECT departamento FROM funcionarios WHERE nome = 'João'); 
+-- Retorna os nomes dos funcionários que estão no mesmo departamento que o funcionário chamado 'João'. A subquery (SELECT departamento FROM funcionarios WHERE nome = 'João') retorna o departamento de João, e a consulta externa seleciona os funcionários que pertencem a esse departamento.
 
--- Outro exemplo:
+-- Outro exemplo de uso da SUBQUERY:
 SELECT nome FROM funcionarios
-WHERE id IN (SELECT id_funcionario FROM projetos WHERE nome_projeto = 'Projeto X'); -- Retorna os nomes dos funcionários que estão envolvidos no 'Projeto X'. A subquery (SELECT id_funcionario FROM projetos WHERE nome_projeto = 'Projeto X') retorna os IDs dos funcionários associados ao 'Projeto X', e a consulta externa seleciona os nomes desses funcionários com base nos IDs retornados pela subquery.
+WHERE id IN (SELECT id_funcionario FROM projetos WHERE nome_projeto = 'Projeto X'); 
+-- Retorna os nomes dos funcionários que estão envolvidos no 'Projeto X'. A subquery (SELECT id_funcionario FROM projetos WHERE nome_projeto = 'Projeto X') retorna os IDs dos funcionários associados ao 'Projeto X', e a consulta externa seleciona os nomes desses funcionários com base nos IDs retornados pela subquery.
 
--- Outro exemplo:
+-- Outro exemplo de uso da SUBQUERY:
 SELECT nome FROM 
 (SELECT nome FROM funcionarios WHERE salario > 4000) AS subconsulta
-WHERE nome LIKE 'A%'; -- Retorna os nomes dos funcionários que têm salário maior que 4000 e cujo nome começa com a letra 'A'. A subquery (SELECT nome FROM funcionarios WHERE salario > 4000) retorna os nomes dos funcionários com salário superior a 4000, e a consulta externa filtra esses nomes para incluir apenas aqueles que começam com 'A'.
+WHERE nome LIKE 'A%'; 
+-- Retorna os nomes dos funcionários que têm salário maior que 4000 e cujo nome começa com a letra 'A'. A subquery (SELECT nome FROM funcionarios WHERE salario > 4000) retorna os nomes dos funcionários com salário superior a 4000, e a consulta externa filtra esses nomes para incluir apenas aqueles que começam com 'A'.
 
 -- Outro exemplo (tabela "suco_vendas"):
 SELECT X.EMBALAGEM, X.PRECO_MAXIMO FROM 
@@ -691,7 +852,8 @@ GROUP BY EMBALAGEM) X WHERE X.PRECO_MAXIMO >= 10; -- Repare que colocamos um ali
 CREATE VIEW funcionarios_vendas AS
 SELECT f.nome, f.departamento, f.salario, p.nome_projeto
 FROM funcionarios f
-JOIN projetos p ON f.id = p.id_funcionario; -- Esta visão chamada "funcionarios_vendas" combina informações da tabela "funcionarios" e "projetos" para mostrar o nome, departamento, salário e nome do projeto de cada funcionário.
+JOIN projetos p ON f.id = p.id_funcionario; 
+-- Esta visão chamada "funcionarios_vendas" combina informações da tabela "funcionarios" e "projetos" para mostrar o nome, departamento, salário e nome do projeto de cada funcionário.
 
 -- Vamos a tabela "suco_vendas" para exemplificar melhor o uso da visão, passo a passo:
 SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS MAIOR_PRECO FROM tabela_de_produtos
