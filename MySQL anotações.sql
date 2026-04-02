@@ -1950,12 +1950,3 @@ SELECT SUBSTRING(CONVERT(23.3, CHAR), 1, 1) AS RESULTADO;
 
 
 
-
--- Converte o número 23.3 para o tipo Texto (CHAR) e extrai o primeiro caractere. Retorno: '2'.
-
-------------------------------------------------------------------------------------------
-
-
-
-
-
