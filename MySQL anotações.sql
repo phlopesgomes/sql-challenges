@@ -418,7 +418,8 @@ SELECT * FROM funcionarios WHERE NOT departamento IN ('Vendas', 'Marketing');
 
 -- Exemplo de uso do LIKE:
 SELECT * FROM funcionarios WHERE nome LIKE 'A%'; 
--- Seleciona todos os funcionários cujo nome começa com a letra 'A'. O símbolo de porcentagem (%) é um curinga que representa qualquer sequência de caracteres.
+-- Seleciona todos os funcionários cujo nome começa com a letra 'A'. 
+-- O símbolo de porcentagem (%) é um curinga que representa qualquer sequência de caracteres.
 
 -- Outro exemplo de uso do LIKE;
 SELECT * FROM funcionarios WHERE nome LIKE '%Silva'; 
@@ -430,7 +431,8 @@ SELECT * FROM funcionarios WHERE nome LIKE '%an%';
 
 -- Outro exemplo de uso do LIKE;
 SELECT * FROM funcionarios WHERE nome LIKE '_a%'; 
--- Seleciona todos os funcionários cujo segundo caractere do nome é 'a'. O sublinhado (_) é um curinga que representa um único caractere.
+-- Seleciona todos os funcionários cujo segundo caractere do nome é 'a'. 
+-- O sublinhado (_) é um curinga que representa um único caractere.
 
 -- Outro exemplo de uso do LIKE;
 SELECT * FROM funcionarios WHERE nome LIKE 'J_n%'; 
@@ -442,7 +444,7 @@ SELECT * FROM funcionarios WHERE nome LIKE '%Eduardo%';
 
 -- Outro exemplo de uso do LIKE;
 SELECT * FROM funcionarios WHERE nome LIKE '%o_o%'; 
--- Seleciona todos os funcionários cujo nome contém 'o' como segundo caractere e 'o' como quarto caractere, com qualquer sequência de caracteres antes, entre e depois.------------------------------------------------------------------------------------------
+-- Seleciona todos os funcionários cujo nome contém 'o' como segundo caractere e 'o' como quarto caractere, com qualquer sequência de caracteres antes, entre e depois.
 
 --- Também podemos usar o LIKE com operadores lógicos (AND, OR e NOT):
 SELECT * FROM funcionarios WHERE nome LIKE 'A%' AND departamento = 'Vendas'; 
