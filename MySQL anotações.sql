@@ -1292,6 +1292,62 @@ FROM ITENS_NOTAS_FISCAIS;
 
 ------------------------------------------------------------------------------------------
 
+-- FUNÇÕES DE JANELA (Window Functions);
+-- Diferente das funções matemáticas comuns, as Funções de Janela realizam cálculos em um conjunto de linhas (uma "janela") que estão relacionadas à linha atual.
+-- Elas permitem criar rankings, numerações e comparações sem a necessidade de agrupar os dados e perder os detalhes de cada registro.
+
+-- ROW_NUMBER (Numeração Sequencial): Atribui um número inteiro sequencial e único para cada linha dentro da partição definida. 
+-- É a função principal para criar Rankings de vendas, produtos ou clientes.
+
+-- Estrutura Básica: ROW_NUMBER() OVER (ORDER BY coluna DESC/ASC)
+
+-- Exemplo de uso do ROW_NUMBER para criar um Ranking de Produtos:
+SELECT 
+    ROW_NUMBER() OVER(ORDER BY COUNT(v.fk_produto) DESC) AS RANKING,
+    p.nome_produto, 
+    COUNT(v.fk_produto) AS QTD_VENDAS
+FROM produtos p
+INNER JOIN vendas v ON p.id_produto = v.fk_produto
+GROUP BY p.nome_produto
+LIMIT 5;
+-- O comando OVER(ORDER BY...) define que a numeração (1, 2, 3...) deve seguir a ordem decrescente da contagem de vendas.
+
+--------------------------------------------------------------
+
+-- RANK vs DENSE_RANK (Tratamento de Empates):
+-- Quando dois registros possuem o mesmo valor, estas funções definem como o ranking deve se comportar.
+
+-- RANK: Se houver empate no 1º lugar, os dois ganham "1" e o próximo será o "3" (Ele pula o número 2).
+-- DENSE_RANK: Se houver empate no 1º lugar, os dois ganham "1" e o próximo será o "2" (Ele NÃO pula números).
+
+-- Exemplo de comparação de Rankings:
+SELECT 
+    nome_produto,
+    SUM(valor_pago) AS FATURAMENTO,
+    DENSE_RANK() OVER(ORDER BY SUM(valor_pago) DESC) AS POSICAO_RANKING
+FROM produtos p
+INNER JOIN vendas v ON p.id_produto = v.fk_produto
+GROUP BY nome_produto;
+
+--------------------------------------------------------------
+
+-- PARTITION BY (Ranking por Grupos):
+-- Permite reiniciar a contagem do ROW_NUMBER toda vez que um valor de uma coluna mudar. 
+-- Útil para saber, por exemplo, qual o produto nº 1 de CADA categoria individualmente.
+
+-- Exemplo de uso do PARTITION BY:
+SELECT 
+    c.nome_categoria,
+    p.nome_produto,
+    ROW_NUMBER() OVER(PARTITION BY c.nome_categoria ORDER BY COUNT(v.id_venda) DESC) AS RANK_NO_SETOR
+FROM vendas v
+INNER JOIN produtos p ON v.fk_produto = p.id_produto
+INNER JOIN categoria c ON p.fk_categoria = c.id_categoria
+GROUP BY c.nome_categoria, p.nome_produto;
+-- O PARTITION BY faz com que o ranking volte a ser "1" sempre que começar uma nova categoria no relatório.
+
+------------------------------------------------------------------------------------------
+
 --- CONVERSÃO DE DADOS;
 -- A conversão de dados é o processo de transformar um dado de um tipo (ex: Data ou Número) para outro (ex: Texto) durante a consulta. 
 -- Isso é essencial pois certas funções só aceitam tipos específicos de dados, e não queremos alterar a estrutura original da tabela.
