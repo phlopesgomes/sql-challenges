@@ -418,7 +418,8 @@ SELECT * FROM funcionarios WHERE NOT departamento IN ('Vendas', 'Marketing');
 
 -- Exemplo de uso do LIKE:
 SELECT * FROM funcionarios WHERE nome LIKE 'A%'; 
--- Seleciona todos os funcionários cujo nome começa com a letra 'A'. O símbolo de porcentagem (%) é um curinga que representa qualquer sequência de caracteres.
+-- Seleciona todos os funcionários cujo nome começa com a letra 'A'. 
+-- O símbolo de porcentagem (%) é um curinga que representa qualquer sequência de caracteres.
 
 -- Outro exemplo de uso do LIKE;
 SELECT * FROM funcionarios WHERE nome LIKE '%Silva'; 
@@ -430,7 +431,8 @@ SELECT * FROM funcionarios WHERE nome LIKE '%an%';
 
 -- Outro exemplo de uso do LIKE;
 SELECT * FROM funcionarios WHERE nome LIKE '_a%'; 
--- Seleciona todos os funcionários cujo segundo caractere do nome é 'a'. O sublinhado (_) é um curinga que representa um único caractere.
+-- Seleciona todos os funcionários cujo segundo caractere do nome é 'a'. 
+-- O sublinhado (_) é um curinga que representa um único caractere.
 
 -- Outro exemplo de uso do LIKE;
 SELECT * FROM funcionarios WHERE nome LIKE 'J_n%'; 
@@ -442,7 +444,7 @@ SELECT * FROM funcionarios WHERE nome LIKE '%Eduardo%';
 
 -- Outro exemplo de uso do LIKE;
 SELECT * FROM funcionarios WHERE nome LIKE '%o_o%'; 
--- Seleciona todos os funcionários cujo nome contém 'o' como segundo caractere e 'o' como quarto caractere, com qualquer sequência de caracteres antes, entre e depois.------------------------------------------------------------------------------------------
+-- Seleciona todos os funcionários cujo nome contém 'o' como segundo caractere e 'o' como quarto caractere, com qualquer sequência de caracteres antes, entre e depois.
 
 --- Também podemos usar o LIKE com operadores lógicos (AND, OR e NOT):
 SELECT * FROM funcionarios WHERE nome LIKE 'A%' AND departamento = 'Vendas'; 
@@ -1884,6 +1886,15 @@ SELECT CONCAT('O dia de hoje é : ', DATE_FORMAT(CURRENT_TIMESTAMP(), '%W, %d/%m
 -- Usa DATE_FORMAT para converter a data em um texto formatado personalizado (Dia da semana, dia/mês/ano e número da semana).
 
 SELECT SUBSTRING(CONVERT(23.3, CHAR), 1, 1) AS RESULTADO; 
+-- Converte o número 23.3 para o tipo Texto (CHAR) e extrai o primeiro caractere. Retorno: '2'.
+
+------------------------------------------------------------------------------------------
+
+
+
+
+
+
 -- Converte o número 23.3 para o tipo Texto (CHAR) e extrai o primeiro caractere. Retorno: '2'.
 
 ------------------------------------------------------------------------------------------
